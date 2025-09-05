@@ -1,0 +1,16 @@
+.UserAddedAccounts-container {
+  width: 100%;
+  margin-top: 20px;
+  /* padding: 20px; */
+  /* height: 48px; */
+}
+.UserAddedAccounts-info {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.UserAddedAccounts-info > p {
+  font-size: var(--secondary-font-size);
+}

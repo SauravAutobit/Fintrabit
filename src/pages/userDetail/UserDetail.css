@@ -1,0 +1,35 @@
+.user-details-container {
+  position: relative;
+  z-index: 1100;
+}
+.userDetail-scroll {
+  overflow: scroll;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  height: 67vh;
+}
+
+.userDetail-toggle-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.userDetail-dropdown-container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  border-top: 1px solid #2a2a30;
+}
+
+.userDetail-checkbox-container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 20px;
+  /* border-bottom: 1px solid #2a2a30; */
+}
+
+.userDetail-existingAccounts {
+  padding: 20px;
+}

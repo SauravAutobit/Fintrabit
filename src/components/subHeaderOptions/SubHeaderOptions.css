@@ -1,0 +1,31 @@
+.subHeaderOptions-container {
+  display: flex;
+  align-items: center;
+  /* justify-content: space-between; */
+  height: 81px;
+  padding: 20px;
+  border-bottom: 1px solid #2a2a30;
+  gap: 24px;
+  /* position: sticky;
+  top: 80px;
+  background-color: var(--primary-background-color);
+  z-index: 3000; */
+}
+
+.subHeaderOptions-underline {
+  border-bottom: 2px solid #e42d4e;
+  padding-bottom: 10px;
+  cursor: pointer;
+  /* width: 20%;
+  display: flex;
+  justify-content: center; */
+}
+
+.subHeaderOptions-notUnderline {
+  padding-bottom: 10px;
+  border-bottom: 2px solid #18191f;
+  cursor: pointer;
+  /* width: 20%;
+  display: flex;
+  justify-content: center; */
+}

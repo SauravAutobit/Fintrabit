@@ -1,0 +1,257 @@
+/* A wrapper for the content inside the drawer */
+.drawer-content-wrapper {
+  display: flex;
+  height: 100%;
+  width: var(
+    --drawer-width
+  ); /* ADDED: This stops the content from stretching */
+}
+
+/* Your icon strip */
+.icon-strip {
+  width: var(--icon-area-width);
+  padding: 18px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0; /* Prevent this column from shrinking */
+}
+
+/* Your expanding options panel */
+.options-panel {
+  width: calc(var(--drawer-width) - var(--icon-area-width));
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  overflow: hidden; /* Hide content when collapsed */
+  position: relative; /* For positioning the close button */
+  /* align-items: end; */
+}
+
+.options-panel.sidebar-extensions {
+  align-items: normal;
+}
+
+.options-panel.is-open {
+  opacity: 1;
+}
+
+/* Your custom classes for icons and options */
+.image-border {
+  border: 1px solid var(--border-color-secondary);
+  width: 35px;
+  height: 35px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--sidebar-bg-tertiary);
+  cursor: pointer;
+}
+
+.image-no-border {
+  width: 35px;
+  height: 35px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.sidebar-option-container {
+  padding: 13px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  cursor: pointer;
+  height: 26px;
+  margin: 10px 0 0 0;
+}
+
+.sidebar-option-container.open {
+  background-color: var(--header-bg-primary);
+  /* border-radius: 6px;
+  border: 1px solid var(--border-color-tertiary);
+  border-bottom: 0; */
+}
+
+.sidebar-option-container.extensions-open {
+  background-color: var(--sidebar-bg-primary);
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+
+.sidebar-option-container.extensions-container {
+  border-bottom: 1px solid var(--border-color-primary);
+  border-radius: 4px;
+  padding: 4px 6px;
+}
+
+.sidebar-option-iconText {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sidebar-option-backArrow {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 6px;
+  background-color: var(--sidebar-bg-primary);
+  position: absolute;
+  right: 10px;
+}
+
+.css-1lwhjos-MuiPaper-root-MuiDrawer-paper {
+  top: 43px !important;
+}
+
+.css-5yatzx-MuiButtonBase-root-MuiIconButton-root:hover {
+  background-color: transparent !important;
+}
+
+.sidebar-option-text {
+  font-size: var(--font-size-primary);
+  font-weight: var(--font-weight-primary);
+  font-family: var(--font-family-primary);
+}
+
+.sidebar-option-text.extensions-text {
+  color: var(--sidebar-bg-primary);
+}
+
+.sidebar-option-text.extensions-text-open {
+  color: var(--background-color-primary);
+}
+
+.sidebar-database-btn {
+  width: 223px;
+  height: 38px;
+  border-radius: 10px;
+  background-color: #47647a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: white;
+  padding: 10px;
+  margin-top: 10px;
+
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-primary);
+  font-size: var(--font-size-primary);
+}
+
+.dropdown-collapse-container {
+  width: 100%;
+  /* height: 375px; */
+  /* border: 1px solid var(--border-color-tertiary);
+  border-top: 0; */
+  border-radius: 6px;
+
+  background-color: var(--header-bg-primary);
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-primary);
+  font-size: var(--font-size-primary);
+  color: var(--text-color-secondary);
+  margin-bottom: 40px;
+}
+
+.dropdown-collapse-container.extensions-container {
+  /* padding: 6px; */
+  padding: 0;
+  border-bottom: 1px solid var(--border-color-primary);
+  height: 375px;
+  display: block;
+  overflow: scroll;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  background-color: #f2faff;
+}
+
+.sidebar-option-recent {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.sidebar-extensions-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sidebar-search-container {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 10px 0;
+}
+
+.sidebar-extensions-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-color-primary);
+  padding: 6px;
+}
+
+.sidebar-extensions-name {
+  font-weight: var(--font-weight-tertiary);
+}
+
+.sidebar-extensions-description {
+  font-weight: var(--font-weight-secondary);
+  color: var(--text-color-secondary);
+}
+
+.sidebar-extensions-corporation {
+  font-size: 10px;
+  font-weight: var(--font-weight-secondary);
+  margin-top: 10px;
+}
+
+.css-1lwhjos-MuiPaper-root-MuiDrawer-paper {
+  border: none !important;
+  box-shadow: 2px 0px 10px 0px #00000033 !important;
+}
+
+.extension-total {
+  display: none;
+  width: 16px;
+  height: 16px;
+  background-color: var(--sidebar-bg-primary);
+  color: white;
+  border-radius: 24px;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  padding: 10px;
+}
+
+.sidebar-option-container:hover .extension-total {
+  display: flex;
+}
+
+.sidebarOptions {
+  transition: transform 0.2s ease-in-out;
+  flex-shrink: 0;
+}
+
+.sidebarOptions.dropdownOpen {
+  transform: rotate(180deg);
+}

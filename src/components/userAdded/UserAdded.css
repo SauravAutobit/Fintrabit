@@ -1,0 +1,17 @@
+.userAdded-container {
+  display: flex;
+  width: 100%;
+  padding: 20px;
+  justify-content: space-between;
+  /* height: 48px; */
+}
+.userAdded-info {
+  width: 50%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.userAdded-info > p {
+  font-size: var(--secondary-font-size);
+}

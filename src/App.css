@@ -1,0 +1,10 @@
+.main-content {
+  display: flex;
+}
+
+.page-content {
+  /* padding: 20px; */
+  width: 100%;
+  transition: margin-left 0.3s;
+  /* z-index: 2000; */
+}

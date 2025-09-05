@@ -1,0 +1,15 @@
+.subfooter-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 20px;
+  height: 81px;
+  padding: 20px;
+  border-top: 1px solid #2a2a30;
+  /* width: 81%;
+  position: fixed;
+  bottom: 0; */
+  /* background-color: var(--primary-background-color);
+  position: sticky;
+  bottom: 0; */
+}

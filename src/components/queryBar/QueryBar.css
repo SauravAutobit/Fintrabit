@@ -1,0 +1,93 @@
+.queryBar-container {
+  /* height: 322px; */
+  border-radius: 10px;
+  padding: 10px;
+  border: 1px solid #2a2a30;
+  background-color: rgb(75 75 77 / 20%);
+}
+
+.queryBar-options {
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid #6c6c6c33;
+  border-radius: 10px;
+  margin: 20px 0;
+  padding: 10px;
+  justify-content: space-between;
+}
+
+.queryBar-input-option {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+.queryBar-input-icon {
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  /* height: 44px; */
+  margin-top: 20px;
+  cursor: pointer;
+  /* width: 32%; */
+}
+
+.queryBar-input {
+  background-color: var(--secondary-background-color) !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none;
+  height: 44px;
+  color: var(--primary-color) !important;
+  font-size: var(--primary-font-size);
+  font-weight: var(--primary-font-weight);
+  font-family: var(--primary-font-family);
+  cursor: pointer;
+}
+
+.queryBar-input:focus {
+  box-shadow: none !important;
+}
+
+.queryBar-input::placeholder {
+  color: #777777;
+  opacity: 1;
+}
+
+.queryBar-input-icons {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  position: relative;
+}
+
+.queryBar-delete-icon {
+  display: none;
+  width: 40px;
+  height: 40px;
+  background-color: #d00416;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-left: 10px;
+  flex-shrink: 0;
+}
+
+.queryBar-inputs-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 10px;
+  transition: all 0.3s ease-in;
+}
+
+.queryBar-input-icons:hover .queryBar-delete-icon {
+  display: flex;
+}
+
+.queryBar-input-icons:hover .queryBar-inputs-container {
+  width: calc(100% - 50px); /* account for icon width + margin */
+}
