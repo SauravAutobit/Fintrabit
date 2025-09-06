@@ -91,3 +91,16 @@
 .queryBar-input-icons:hover .queryBar-inputs-container {
   width: calc(100% - 50px); /* account for icon width + margin */
 }
+
+.queryBar-addMore {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  /* background-color: red; */
+  padding: 20px 10px 0 10px;
+}
+
+.queryBar-Add-button {
+  display: flex;
+  justify-content: flex-end;
+}

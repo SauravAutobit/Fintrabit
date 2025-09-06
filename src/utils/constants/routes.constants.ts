@@ -2,5 +2,5 @@
     home: "/",
     userDetail: "/user-detail",
     tradingAccount:"/trading-account",
-    tradingAccountDetail:"/trading-account-detail"
+    tradingAccountDetail:"/trading-account-detail",
   }

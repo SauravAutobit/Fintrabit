@@ -40,7 +40,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) => {
               height="11.67px"
             />
           </Button>
-          {Array.from({ length: 13 }).map((_, index) => (
+          {Array.from({ length: 7 }).map((_, index) => (
             <img
               key={index}
               src={sidebarIcon}

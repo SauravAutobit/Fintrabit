@@ -2,6 +2,7 @@
   padding: 20px;
   width: 70px;
   border-right: 1px solid #2a2a30;
+  height: calc(100vh - 79px);
 }
 .sidebar-btn {
   width: 24px;

@@ -1,0 +1,137 @@
+.queryDetails-nav {
+  background: var(--secondary-background-color);
+  border-radius: 4px;
+  padding: 10px 6px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: 44px;
+  cursor: pointer;
+}
+
+.queryDetails-nav-text {
+  font-weight: 500;
+}
+
+.queryDetails-container {
+  margin-top: 30px;
+  padding: 30px 20px;
+  border: 1px solid #2a2a30;
+  border-radius: 10px;
+  margin-bottom: 146px;
+}
+
+.queryDetails-delete {
+  background: #d00416;
+  border-radius: 4px;
+  padding: 6px 20px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.queryDetails-edit {
+  display: flex;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.queryDetails-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.queryDetails-name {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 46%;
+}
+
+.queryDetails-btn-container {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.queryDetails-heading {
+  font-weight: var(--secondary-font-weight);
+}
+
+.queryDetails-instrunment {
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 24%;
+}
+
+.queryDetails-table {
+  margin-top: 50px;
+  width: 100%;
+}
+
+.queryDetails-table-heading {
+  font-weight: var(--secondary-font-weight);
+}
+
+.queryDetails-table-row {
+  border-bottom: 1px solid #2a2a30;
+}
+
+.queryDetails-table td,
+.queryDetails-table th {
+  padding: 12px;
+  vertical-align: middle;
+}
+
+.queryDetails-table tr:not(:last-child) {
+  border-bottom: 0.5px solid #2a2a30;
+}
+
+.dropdown,
+.dropdown button {
+  width: 100%;
+}
+
+.queryDetails-table td,
+.queryDetails-table th {
+  text-align: left;
+}
+
+.queryDetails-table input.detailsForm-input,
+.queryDetails-table .dropdown,
+.queryDetails-table .dropdown button {
+  min-width: 140px;
+  max-width: 180px;
+  width: 100%;
+}
+
+/* Disabled input look */
+.disabled-input {
+  background-color: transparent !important;
+  border: 1px solid #8e8e8e80 !important;
+  color: #8e8e8e80 !important;
+  cursor: not-allowed;
+}
+
+/* Disabled dropdown button */
+.disabled-dropdown button.dropdown-toggle {
+  background-color: transparent !important;
+  color: #8e8e8e80 !important;
+  border: 1px solid #8e8e8e80 !important;
+  cursor: not-allowed !important;
+}
+
+.deleteIcon-disabled {
+  filter: grayscale(100%) opacity(0.5);
+  /* pointer-events: none; */
+  cursor: not-allowed;
+}
+
+.deleteIcon-enabled {
+  cursor: pointer;
+}

@@ -12,6 +12,7 @@ const DetailsForm = () => {
 
   const schema = yup.object().shape({
     userId: yup.string().required("user id is a required field"),
+    ip: yup.string().required("ip is a required field"),
     firstName: yup.string().required("firstname is a required field"),
     lastName: yup.string().required("lastname is a required field"),
     emailId: yup.string().required("email id is a required field"),
@@ -27,6 +28,7 @@ const DetailsForm = () => {
       onSubmit={console.log}
       initialValues={{
         userId: "",
+        ip: "",
         firstName: "",
         lastName: "",
         emailId: "",
@@ -43,7 +45,7 @@ const DetailsForm = () => {
           className="detailsForm-container"
         >
           <Row className="mb-3">
-            <Form.Group as={Col} md="12" controlId="formUserId">
+            <Form.Group as={Col} md="6" controlId="formUserId">
               <Form.Label>
                 User ID<span style={{ color: "#D00416" }}>*</span>
               </Form.Label>
@@ -60,7 +62,26 @@ const DetailsForm = () => {
                 {errors.userId}
               </Form.Control.Feedback>
             </Form.Group>
+
+            <Form.Group as={Col} md="6" controlId="formip">
+              <Form.Label>
+                Load Ips<span style={{ color: "#D00416" }}>*</span>
+              </Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter ip"
+                name="loadIps"
+                value={values.ip}
+                onChange={handleChange}
+                isInvalid={!!errors.ip}
+                className="detailsForm-input"
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.ip}
+              </Form.Control.Feedback>
+            </Form.Group>
           </Row>
+
           <Row className="mb-3">
             <Form.Group as={Col} md="6" controlId="formFirstName">
               <Form.Label>

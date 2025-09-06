@@ -1,0 +1,43 @@
+.queryAdded-container {
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+.querybar-heading-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 10px;
+}
+
+.query-heading {
+  font-weight: 500;
+  color: white;
+  margin-bottom: 24px;
+}
+
+.queryAdded-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #2a2a30;
+  padding-bottom: 14px;
+  cursor: pointer;
+}
+
+.queryAdded-query-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  flex: 1;
+}
+
+.query-value {
+  color: white;
+}
+
+.queryAdded-remaining {
+  text-align: right;
+  cursor: pointer;
+  font-weight: 500;
+}
