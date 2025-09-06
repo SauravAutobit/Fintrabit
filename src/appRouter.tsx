@@ -7,6 +7,8 @@ import TradingAccountDetail from "./pages/tradingAccountDetail/TradingAccountDet
 import { Routing } from "./utils/constants/routes.constants";
 import PropertiesComponent from "./pages/propertiesComponent/PropertiesComponent";
 import CreateStaticComponnet from "./pages/createStaticComponnet/CreateStaticComponnet";
+import Instrunments from "./pages/instrunments/Instrunments";
+import CreateInstrument from "./pages/createInstrument/CreateInstrument";
 // import CreateComponentPage from "./components/createComponentPage/CreateComponentPage";
 
 export const appRouter = createBrowserRouter([
@@ -45,7 +47,11 @@ export const appRouter = createBrowserRouter([
 
       {
         path: Routing.instruments,
-        element: <div>Instruments Page</div>,
+        element: <Instrunments />,
+      },
+      {
+        path: Routing.createInstrument,
+        element: <CreateInstrument />,
       },
     ],
   },

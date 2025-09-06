@@ -5,6 +5,7 @@
     tradingAccountDetail:"/trading-account-detail",
     propertiesComponent:"/properties-component",
     instruments: "/instruments",
-    createStaticComponnet: "/create-static-componnet"
+    createStaticComponnet: "/create-static-componnet",
+    createInstrument: "/create-instrument"
     // createComponent: "/create-component/:type"
   }
