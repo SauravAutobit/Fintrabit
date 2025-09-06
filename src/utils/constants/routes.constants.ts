@@ -6,4 +6,5 @@
     propertiesComponent:"/properties-component",
     instruments: "/instruments",
     createStaticComponnet: "/create-static-componnet"
+    // createComponent: "/create-component/:type"
   }
