@@ -1,0 +1,38 @@
+.instrunment-count-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  /* flex-wrap: wrap; */
+}
+
+.instrunmentCount-container {
+    width: 100%;
+  background: #2a2a30;
+  border-radius: 10px;
+  padding: 10px 20px;
+}
+
+.instrunmentCount-heading {
+  font-weight: var(--primary-font-weight);
+}
+
+.instrunmentCount-count {
+  font-weight: 600;
+  font-size: 26px;
+}
+
+.instrunmentCount-growth {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.instrunmentCount-growth > span {
+  color: #0dd650;
+}
+
+.instrunment-show {
+  color: #e42d4e;
+  font-weight: var(--secondary-font-weight);
+  text-align: right;
+}
