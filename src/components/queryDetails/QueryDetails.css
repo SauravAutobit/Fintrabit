@@ -40,33 +40,16 @@
 
 .queryDetails-content {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-}
-
-.queryDetails-name {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 46%;
+  align-items: flex-start;
+  flex-wrap: wrap; /* Optional, helps on smaller screens */
+  gap: 20px;
 }
 
 .queryDetails-btn-container {
   display: flex;
   align-items: center;
   gap: 40px;
-}
-
-.queryDetails-heading {
-  font-weight: var(--secondary-font-weight);
-}
-
-.queryDetails-instrunment {
-  margin-top: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 24%;
 }
 
 .queryDetails-table {
@@ -134,4 +117,30 @@
 
 .deleteIcon-enabled {
   cursor: pointer;
+}
+
+.instrument-details {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  row-gap: 12px;
+  column-gap: 100px;
+  max-width: 400px;
+}
+
+.detail-row {
+  display: contents; /* Allows children to align directly in grid cells */
+}
+
+.label {
+  font-weight: 500;
+  color: #fff;
+  min-width: 160px; /* optional: makes labels line up vertically */
+  white-space: nowrap; /* keep the label on one line */
+}
+
+.value {
+  color: #ccc;
+  flex: 1;
+  white-space: nowrap; /* prevents value from wrapping */
+  text-overflow: ellipsis;
 }

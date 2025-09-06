@@ -35,10 +35,16 @@ const QueryDetails = ({
       </div>
       <div className="queryDetails-container">
         <div className="queryDetails-content">
-          <div className="queryDetails-name">
-            <span className="queryDetails-heading">{name}</span>
-            <span>{nameValue}</span>
-          </div>{" "}
+          <div className="instrument-details">
+            <div className="detail-row">
+              <span className="label mb-4">{name}</span>
+              <span className="value mb-4">{nameValue}</span>
+            </div>
+            <div className="detail-row">
+              <span className="label">{total}</span>
+              <span className="value">{totalValue}</span>
+            </div>
+          </div>
           {
             <div className="queryDetails-btn-container">
               <div
@@ -54,10 +60,6 @@ const QueryDetails = ({
               </div>
             </div>
           }
-        </div>
-        <div className="queryDetails-instrunment">
-          <span className="querDetails-heading">{total}</span>
-          <span>{totalValue}</span>
         </div>
 
         <table className="queryDetails-table">
