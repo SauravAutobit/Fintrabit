@@ -8,6 +8,8 @@ import { Constant } from "../../utils/constants/app.constants";
 import { Routing } from "../../utils/constants/routes.constants";
 import AccountsDetailTab from "../accountsDetailTab/AccountsDetailTab";
 import LeverageTab from "../leverageTab/LeverageTab";
+import ChargesTab from "../chargesTab/ChargesTab";
+import InstrumentField from "../instrumentField/InstrumentField";
 
 const TradingAccountDetail = () => {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -28,6 +30,9 @@ const TradingAccountDetail = () => {
       <div className="tradingAccountDetail-scroll">
         {selectedTab === 0 && <AccountsDetailTab />}
         {selectedTab === 1 && <LeverageTab />}
+        {selectedTab === 2 && <ChargesTab />}
+        {selectedTab === 3 && <InstrumentField />}
+        {selectedTab === 4 && <div>Add user (Existing)</div>}
       </div>
       <SubFooter
         btnText={

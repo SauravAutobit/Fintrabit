@@ -121,7 +121,7 @@ const QueryBar = ({ name, value, type, placeholder }: QueryBarProps) => {
         ))}
 
         <div className="queryBar-addMore" onClick={handleAdd}>
-          + Add more Leverage
+          + Add more {name.split(" ")[0]}
         </div>
       </div>
       <div className="queryBar-Add-button">

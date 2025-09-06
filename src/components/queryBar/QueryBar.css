@@ -98,6 +98,7 @@
   justify-content: flex-end;
   /* background-color: red; */
   padding: 20px 10px 0 10px;
+  cursor: pointer;
 }
 
 .queryBar-Add-button {

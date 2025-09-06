@@ -8,6 +8,9 @@ export const Constant = {
     LeverageValue: "Leverage Value",
     LeverageType: "Leverage Type",
     Add: "Add",
+    TaxName: "Tax Name",
+    TaxValue: "Tax Value",
+    TaxType: "Tax Type",
 }
 
 
