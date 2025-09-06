@@ -1,0 +1,69 @@
+.properties-heading {
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.properties-container {
+  border-radius: 10px;
+  padding: 10px;
+  border: 1px solid #2a2a30;
+  background: #0000001a;
+}
+
+.properties-accordion .accordion-item {
+  border: none !important;
+  background-color: transparent !important;
+  margin-bottom: 10px;
+}
+
+.properties-accordion .accordion-button {
+  background: #2a2a30 !important;
+  color: white !important;
+  padding: 10px;
+  height: 44px;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+}
+
+.properties-accordion .accordion-button:not(.collapsed) {
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+.properties-accordion .accordion-body {
+  background: #0000001a !important;
+  border: 1px solid #2a2a30;
+  border-top: none !important;
+  border-radius: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  padding: 10px;
+}
+
+.properties-accordion .accordion-button::after {
+  filter: brightness(0) invert(1);
+}
+
+.detailsForm-input {
+  transition: all 0.2s ease;
+}
+
+.detailsForm-input-disabled {
+  cursor: not-allowed;
+  background-color: #504e4e0d !important;
+  border: 1px solid #8e8e8e80 !important;
+  color: #ffff;
+}
+
+.properties-accordion .form-label,
+.properties-container .form-label {
+  color: #d2d2d2;
+}
+
+.properties-accordion .queryDetails-edit {
+  color: #d2d2d2;
+}
+
+.properties-accordion .queryDetails-delete {
+  color: #d2d2d2;
+}

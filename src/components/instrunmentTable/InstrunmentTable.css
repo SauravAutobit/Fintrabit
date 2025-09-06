@@ -1,7 +1,7 @@
-.accordion-header {
+.tradingAccountDetail-instrunment .accordion-header {
   background: #18191f !important;
 }
-.accordion-header-content {
+.tradingAccountDetail-instrunment .accordion-header-content {
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -10,33 +10,32 @@
   padding-bottom: 16px;
 }
 
-.header-cell {
+.tradingAccountDetail-instrunment .header-cell {
   flex: 1;
   text-align: left;
   padding: 0;
 }
 
-.accordion-item {
+.tradingAccountDetail-instrunment .accordion-item {
   background-color: var(--primary-background-color);
   color: var(--primary-color);
-  border: none !important; /* Optional: removes borders */
-  /* margin-bottom: 8px; */
+  border: none !important;
 }
 
-.accordion-button {
+.tradingAccountDetail-instrunment .accordion-button {
   background-color: var(--primary-background-color) !important;
   color: var(--primary-color) !important;
   box-shadow: none !important;
   padding: 21px 0 0 0;
 }
 
-.accordion-body {
+.tradingAccountDetail-instrunment .accordion-body {
   background-color: var(--primary-background-color) !important;
   color: var(--primary-color) !important;
   padding: 16px;
   border-top: 1px solid #333;
 }
 
-.accordion-button::after {
+.tradingAccountDetail-instrunment .accordion-button::after {
   filter: brightness(0) invert(1);
 }

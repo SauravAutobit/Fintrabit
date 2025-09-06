@@ -1,15 +1,20 @@
 .subHeaderOptions-container {
   display: flex;
   align-items: center;
-  /* justify-content: space-between; */
+  justify-content: space-between;
   height: 81px;
   padding: 20px;
   border-bottom: 1px solid #2a2a30;
-  gap: 24px;
+  /* gap: 24px; */
   /* position: sticky;
   top: 80px;
   background-color: var(--primary-background-color);
   z-index: 3000; */
+}
+
+.subHeaderOptions-tabs {
+  display: flex;
+  gap: 24px;
 }
 
 .subHeaderOptions-underline {

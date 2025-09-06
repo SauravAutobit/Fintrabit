@@ -1,9 +1,11 @@
+import { Routing } from "./routes.constants";
+
 export const sidebarOptions = [
   {
     title: "User Management",
     children: [
-      { name: "User", link: "/" },
-      { name: "Trading Account", link: "/trading-account" },
+      { name: "User", link: Routing.home },
+      { name: "Trading Account", link: Routing.tradingAccount },
     ],
   },
   {
@@ -15,11 +17,10 @@ export const sidebarOptions = [
     ],
   },
   {
-    title: "Admins Management",
+    title: "Instrument Management",
     children: [
-      { name: "Create Admin", link: "/create-admin" },
-      { name: "Manage Roles", link: "/manage-roles" },
+      { name: "Properties Component", link: Routing.propertiesComponent },
+      { name: "Instruments", link: Routing.instruments },
     ],
   },
-  // ... repeat same structure for others
 ];

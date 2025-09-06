@@ -1,11 +1,11 @@
 import "./QueryDetails.css";
 import backArrow from "../../assets/icons/backArrow.svg";
-import edit from "../../assets/icons/edit.svg";
 import deleteIcon from "../../assets/icons/deleteIcon.svg";
 import Form from "react-bootstrap/Form";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import { useState } from "react";
+import EditDelete from "../editDelete/EditDelete";
 
 interface QueryDetailsProps {
   onBack: () => void;
@@ -24,7 +24,7 @@ const QueryDetails = ({
   totalValue,
 }: QueryDetailsProps) => {
   const [dropdownText, setDropdownText] = useState("Select Data Type");
-  const [isEditable, setIsEditable] = useState(false); // <-- Add this
+  const [isEditable, setIsEditable] = useState(false);
 
   const leverageRows = Array.from({ length: 5 }, (_, i) => `Leverage ${i + 1}`);
   return (
@@ -45,21 +45,7 @@ const QueryDetails = ({
               <span className="value">{totalValue}</span>
             </div>
           </div>
-          {
-            <div className="queryDetails-btn-container">
-              <div
-                className="queryDetails-edit"
-                onClick={() => setIsEditable(true)}
-              >
-                <img src={edit} alt="edit" />
-                Edit
-              </div>
-              <div className="queryDetails-delete">
-                Delete
-                <img src={deleteIcon} alt="deleteIcon" width={14} height={16} />
-              </div>
-            </div>
-          }
+          <EditDelete enableEdit={() => setIsEditable(true)} />
         </div>
 
         <table className="queryDetails-table">
