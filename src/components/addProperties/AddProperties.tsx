@@ -34,106 +34,285 @@ const AddProperties = ({
   onAddProperty,
   setProperties,
 }: AddPropertiesProps) => {
-  const [isEditable, setIsEditable] = useState(false);
+  const [editableIndex, setEditableIndex] = useState<number | null>(null);
 
   const deleteProperty = (indexToDelete: number) => {
     const remaining = properties.filter((_, index) => index !== indexToDelete);
     setProperties(remaining);
   };
 
+  // 1. A new helper function to handle editing properties in the list
+  const handlePropertyUpdate = (
+    indexToUpdate: number,
+    fieldName: keyof Property,
+    value: string
+  ) => {
+    const updatedProperties = properties.map((prop, index) => {
+      if (index === indexToUpdate) {
+        return { ...prop, [fieldName]: value };
+      }
+      return prop;
+    });
+    setProperties(updatedProperties);
+  };
   return (
     <div>
       <div className="properties-heading">Properties</div>
 
       <Accordion className="properties-accordion">
         {properties.length !== 0 &&
-          properties.map((property, index) => (
-            <Accordion.Item eventKey={index.toString()} key={index}>
-              <Accordion.Header>{property.name}</Accordion.Header>
-              <Accordion.Body>
-                <Row className="mb-3">
-                  <Form.Group as={Col} md="6" controlId="formUserId">
-                    <Form.Label>Name</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter key"
-                      name="name"
-                      value={property.name}
-                      onChange={(e) => {
-                        if (isEditable) {
-                          const updatedProperties = [...properties];
-                          updatedProperties[index].name = e.target.value;
-                          setProperties(updatedProperties);
-                        }
-                      }}
-                      disabled={!isEditable}
-                      className={
-                        isEditable
-                          ? "detailsForm-input"
-                          : "detailsForm-input-disabled"
-                      }
-                    />
-                  </Form.Group>
+          properties.map((property, index) => {
+            const isCurrentlyEditing = editableIndex === index;
 
-                  <Form.Group as={Col} md="6" controlId="formip">
-                    <Form.Label>Default Value</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter Default Value"
-                      name="defaultValue"
-                      value={property.defaultValue}
-                      onChange={(e) => {
-                        if (isEditable) {
-                          const updatedProperties = [...properties];
-                          updatedProperties[index].defaultValue =
-                            e.target.value;
-                          setProperties(updatedProperties);
-                        }
-                      }}
-                      disabled={!isEditable}
-                      className={
-                        isEditable
-                          ? "detailsForm-input"
-                          : "detailsForm-input-disabled"
-                      }
-                    />
-                  </Form.Group>
-                </Row>
+            return (
+              <Accordion.Item eventKey={index.toString()} key={index}>
+                <Accordion.Header>{property.name}</Accordion.Header>
+                <Accordion.Body>
+                  {/* --- STATIC property display with Dropdown --- */}
+                  {indexNumber === 0 && (
+                    <>
+                      <Row className="mb-3">
+                        <Form.Group as={Col} md={6}>
+                          <Form.Label>Name</Form.Label>
+                          <Form.Control
+                            type="text"
+                            value={property.name}
+                            disabled={!isCurrentlyEditing}
+                            onChange={(e) =>
+                              handlePropertyUpdate(
+                                index,
+                                "name",
+                                e.target.value
+                              )
+                            }
+                            className={
+                              isCurrentlyEditing
+                                ? "detailsForm-input"
+                                : "detailsForm-input-disabled"
+                            }
+                          />
+                        </Form.Group>
+                        <Form.Group as={Col} md={6}>
+                          <Form.Label>Default Value</Form.Label>
+                          <Form.Control
+                            type="text"
+                            value={property.defaultValue}
+                            disabled={!isCurrentlyEditing}
+                            onChange={(e) =>
+                              handlePropertyUpdate(
+                                index,
+                                "defaultValue",
+                                e.target.value
+                              )
+                            }
+                            className={
+                              isCurrentlyEditing
+                                ? "detailsForm-input"
+                                : "detailsForm-input-disabled"
+                            }
+                          />
+                        </Form.Group>
+                      </Row>
+                      <Row className="mb-3">
+                        <Form.Group as={Col} md={12}>
+                          <Form.Label>Data Type</Form.Label>
+                          <DropdownButton
+                            id={`dropdown-datatype-${index}`}
+                            title={property.dataType || "Select Data Type"}
+                            className={
+                              isCurrentlyEditing
+                                ? "dropDown-btn"
+                                : "detailsForm-input-disabled"
+                            }
+                            disabled={!isCurrentlyEditing}
+                          >
+                            <Dropdown.Item
+                              onClick={() =>
+                                handlePropertyUpdate(index, "dataType", "int")
+                              }
+                            >
+                              int
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              onClick={() =>
+                                handlePropertyUpdate(
+                                  index,
+                                  "dataType",
+                                  "numeric"
+                                )
+                              }
+                            >
+                              numeric
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              onClick={() =>
+                                handlePropertyUpdate(
+                                  index,
+                                  "dataType",
+                                  "string"
+                                )
+                              }
+                            >
+                              string
+                            </Dropdown.Item>
+                          </DropdownButton>
+                        </Form.Group>
+                      </Row>
+                    </>
+                  )}
 
-                <Row className="mb-3">
-                  <Form.Group as={Col} md="6" controlId="formUserId">
-                    <Form.Label>Data Type</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter Data Type"
-                      name="dataType"
-                      value={property.dataType}
-                      onChange={(e) => {
-                        if (isEditable) {
-                          const updatedProperties = [...properties];
-                          updatedProperties[index].dataType = e.target.value;
-                          setProperties(updatedProperties);
-                        }
-                      }}
-                      disabled={!isEditable}
-                      className={
-                        isEditable
-                          ? "detailsForm-input"
-                          : "detailsForm-input-disabled"
-                      }
-                    />
-                  </Form.Group>
-                </Row>
+                  {/* --- DYNAMIC property display with Dropdowns --- */}
+                  {indexNumber === 1 && (
+                    <>
+                      <Row className="mb-3">
+                        <Form.Group as={Col} md={6}>
+                          <Form.Label>Name</Form.Label>
+                          <Form.Control
+                            type="text"
+                            value={property.name}
+                            disabled={!isCurrentlyEditing}
+                            onChange={(e) =>
+                              handlePropertyUpdate(
+                                index,
+                                "name",
+                                e.target.value
+                              )
+                            }
+                            className={
+                              isCurrentlyEditing
+                                ? "detailsForm-input"
+                                : "detailsForm-input-disabled"
+                            }
+                          />
+                        </Form.Group>
+                        <Form.Group as={Col} md={6}>
+                          <Form.Label>Length</Form.Label>
+                          <Form.Control
+                            type="number"
+                            value={property.length}
+                            disabled={!isCurrentlyEditing}
+                            onChange={(e) =>
+                              handlePropertyUpdate(
+                                index,
+                                "length",
+                                e.target.value
+                              )
+                            }
+                            className={
+                              isCurrentlyEditing
+                                ? "detailsForm-input"
+                                : "detailsForm-input-disabled"
+                            }
+                          />
+                        </Form.Group>
+                      </Row>
+                      <Row className="mb-3">
+                        <Form.Group as={Col} md={6}>
+                          <Form.Label>Data Type</Form.Label>
+                          <DropdownButton
+                            id={`dropdown-datatype-${index}`}
+                            title={property.dataType || "Select Data Type"}
+                            className={
+                              isCurrentlyEditing
+                                ? "dropDown-btn"
+                                : "detailsForm-input-disabled"
+                            }
+                            disabled={!isCurrentlyEditing}
+                          >
+                            <Dropdown.Item
+                              onClick={() =>
+                                handlePropertyUpdate(index, "dataType", "int")
+                              }
+                            >
+                              int
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              onClick={() =>
+                                handlePropertyUpdate(
+                                  index,
+                                  "dataType",
+                                  "numeric"
+                                )
+                              }
+                            >
+                              numeric
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              onClick={() =>
+                                handlePropertyUpdate(
+                                  index,
+                                  "dataType",
+                                  "string"
+                                )
+                              }
+                            >
+                              string
+                            </Dropdown.Item>
+                          </DropdownButton>
+                        </Form.Group>
+                        <Form.Group as={Col} md={6}>
+                          <Form.Label>Length Type</Form.Label>
+                          <DropdownButton
+                            id={`dropdown-lengthtype-${index}`}
+                            title={property.lengthType || "Select Length Type"}
+                            className={
+                              isCurrentlyEditing
+                                ? "dropDown-btn"
+                                : "detailsForm-input-disabled"
+                            }
+                            disabled={!isCurrentlyEditing}
+                          >
+                            <Dropdown.Item
+                              onClick={() =>
+                                handlePropertyUpdate(
+                                  index,
+                                  "lengthType",
+                                  "upto"
+                                )
+                              }
+                            >
+                              upto
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              onClick={() =>
+                                handlePropertyUpdate(
+                                  index,
+                                  "lengthType",
+                                  "exact"
+                                )
+                              }
+                            >
+                              exact
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              onClick={() =>
+                                handlePropertyUpdate(
+                                  index,
+                                  "lengthType",
+                                  "infinite"
+                                )
+                              }
+                            >
+                              infinite
+                            </Dropdown.Item>
+                          </DropdownButton>
+                        </Form.Group>
+                      </Row>
+                    </>
+                  )}
 
-                <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                  <EditDelete
-                    enableEdit={() => setIsEditable(true)}
-                    onDelete={() => deleteProperty(index)}
-                  />
-                </div>
-              </Accordion.Body>
-            </Accordion.Item>
-          ))}
+                  <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                    <EditDelete
+                      isEditing={isCurrentlyEditing}
+                      onEdit={() => setEditableIndex(index)} // Set this item as editable
+                      onSave={() => setEditableIndex(null)} // Exit edit mode
+                      onDelete={() => deleteProperty(index)}
+                    />
+                  </div>
+                </Accordion.Body>
+              </Accordion.Item>
+            );
+          })}
       </Accordion>
 
       <div className="properties-container">

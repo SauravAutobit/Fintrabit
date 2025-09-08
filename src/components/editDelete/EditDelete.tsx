@@ -2,18 +2,34 @@ import edit from "../../assets/icons/edit.svg";
 import deleteIcon from "../../assets/icons/deleteIcon.svg";
 
 interface EditDeleteProps {
-  enableEdit: () => void;
+  onEdit: () => void;
   onDelete: () => void;
+  onSave: () => void;
+  isEditing: boolean;
 }
 
-const EditDelete = ({ enableEdit, onDelete }: EditDeleteProps) => {
+const EditDelete = ({
+  onEdit,
+  onDelete,
+  onSave,
+  isEditing,
+}: EditDeleteProps) => {
   return (
     <>
       <div className="queryDetails-btn-container">
-        <div className="queryDetails-edit" onClick={enableEdit}>
-          <img src={edit} alt="edit" />
-          Edit
-        </div>
+        {isEditing ? (
+          // Show a "Save" button when in edit mode
+          <div className="queryDetails-edit" onClick={onSave}>
+            {/* <img src={saveIcon} alt="save" /> */}
+            Save
+          </div>
+        ) : (
+          // Show the "Edit" button when not in edit mode
+          <div className="queryDetails-edit" onClick={onEdit}>
+            <img src={edit} alt="edit" />
+            Edit
+          </div>
+        )}
         <div className="queryDetails-delete" onClick={onDelete}>
           Delete
           <img src={deleteIcon} alt="deleteIcon" width={14} height={16} />

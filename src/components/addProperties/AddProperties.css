@@ -67,3 +67,8 @@
 .properties-accordion .queryDetails-delete {
   color: #d2d2d2;
 }
+
+.properties-accordion .detailsForm-input-disabled .btn {
+  background-color: #504e4e0d !important;
+  color: #fff !important;
+}
