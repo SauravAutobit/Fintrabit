@@ -3,11 +3,12 @@ import "./Button.css";
 
 interface ButtonProps {
   label: string;
-  btnRoute: string;
+  btnRoute?: string;
   width?: string;
   height?: string;
   bgColor?: string;
   textColor?: string;
+  onClick?: () => void;
 }
 
 const Button = ({
@@ -17,16 +18,29 @@ const Button = ({
   height = "41px",
   bgColor = "var(--primary-btn-color)",
   textColor = "var(--secondary-color)",
+  onClick,
 }: ButtonProps) => {
+  const buttonStyles = {
+    width,
+    height,
+    background: bgColor,
+    color: textColor,
+  };
+
+  if (btnRoute) {
+    return (
+      <Link to={btnRoute}>
+        <button className="btn-global" style={buttonStyles}>
+          {label}
+        </button>
+      </Link>
+    );
+  }
+
   return (
-    <Link to={btnRoute}>
-      <button
-        className="btn-global"
-        style={{ width, height, background: bgColor, color: textColor }}
-      >
-        {label}
-      </button>
-    </Link>
+    <button className="btn-global" style={buttonStyles} onClick={onClick}>
+      {label}
+    </button>
   );
 };
 

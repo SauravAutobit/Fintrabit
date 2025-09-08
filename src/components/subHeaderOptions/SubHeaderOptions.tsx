@@ -8,6 +8,7 @@ interface SubHeaderOptionsProps {
   showBtn?: boolean;
   btnText?: string;
   btnRoute?: string;
+  onClick?: () => void;
 }
 const SubHeaderOptions = ({
   options,
@@ -16,6 +17,7 @@ const SubHeaderOptions = ({
   showBtn = false,
   btnText,
   btnRoute,
+  onClick,
 }: SubHeaderOptionsProps) => {
   return (
     <div className="subHeaderOptions-container">
@@ -36,8 +38,12 @@ const SubHeaderOptions = ({
           );
         })}
       </div>
-      {showBtn && btnText && btnRoute && (
+      {showBtn && btnText && btnRoute ? (
         <Button label={btnText} btnRoute={btnRoute} />
+      ) : (
+        showBtn &&
+        btnText &&
+        onClick && <Button label={btnText} onClick={onClick} />
       )}
     </div>
   );
