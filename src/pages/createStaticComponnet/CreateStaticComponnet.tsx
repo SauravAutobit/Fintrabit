@@ -2,9 +2,9 @@ import "./CreateStaticComponnet.css";
 import ComponentNameInput from "../../components/componentNameInput/ComponentNameInput";
 import SubHeaderOptions from "../../components/subHeaderOptions/SubHeaderOptions";
 import AddProperties from "../../components/addProperties/AddProperties";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SubFooter from "../../components/subFooter/SubFooter";
-import { sendMessage } from "../../socket";
+import { addMessageListener, sendMessage } from "../../socket";
 
 interface CreateStaticComponnetProps {
   index: number;
@@ -32,6 +32,7 @@ const CreateStaticComponnet = ({
     length: "",
     lengthType: "",
   });
+  const [lastRequestId, setLastRequestId] = useState<string | null>(null);
 
   const indexNumber = index;
   console.log("properties", properties);
@@ -83,22 +84,23 @@ const CreateStaticComponnet = ({
     const isNewPropertyFilled =
       newProperty.name.trim() !== "" && newProperty.dataType.trim() !== "";
 
-    console.log("isNewPropertyFilled", isNewPropertyFilled);
     // Combine the existing properties list with the one currently being typed
     const allProperties = isNewPropertyFilled
       ? [...properties, newProperty]
       : [...properties];
-
-    console.log("allProperties", allProperties);
 
     if (allProperties.length === 0) {
       alert("Please add at least one property.");
       return;
     }
 
+    // 2. In handleCreate: store the new rid and send the message
+    const newRid = crypto.randomUUID();
+    setLastRequestId(newRid); // Store the ID so our listener can find it
+
     // 1. Gather all the data from your form states
     const message = {
-      rid: crypto.randomUUID(),
+      rid: newRid,
       target: "instrument/category/create",
       session: "xyz",
       payload: {
@@ -119,15 +121,25 @@ const CreateStaticComponnet = ({
 
     console.log("Sending via WS:", message);
     sendMessage(message);
-
-    // 2. Send the data via WebSocket
-    // yourWebSocket.send(JSON.stringify(payload));
-
-    // 3. Listen for a success message from the socket, and THEN navigate back.
-    // For this example, we'll simulate success immediately.
-    console.log("Success! Navigating back.");
-    onBack(); // This triggers setClicked(false) in the parent
   };
+
+  // 4. In useEffect: listen for the specific rid we just sent
+  useEffect(() => {
+    // Don't do anything if we haven't sent a request yet
+    if (!lastRequestId) return;
+
+    // Listen for responses
+    const removeListener = addMessageListener((data) => {
+      // Check if the response's rid matches the one we sent
+      if (data.rid === lastRequestId && data.payload?.status === "success") {
+        console.log("✅ Success response received:", data);
+        onBack(); // Navigate back ONLY when the server confirms
+      }
+      // You could also add an 'else if' here to handle error responses
+    });
+
+    return removeListener; // Cleanup when the component unmounts
+  }, [lastRequestId, onBack]); // Rerun this effect if we send a new request
 
   return (
     <>
