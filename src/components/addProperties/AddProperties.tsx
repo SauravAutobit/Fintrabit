@@ -16,60 +16,22 @@ interface Property {
 
 interface AddPropertiesProps {
   indexNumber: number;
-  propertyName: string;
+  properties: Property[];
+  newProperty: Property; // The property currently being typed
+  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // Handler for the form
+  addProperty: () => void; // Function to add the property to the list
+  setProperties: React.Dispatch<React.SetStateAction<Property[]>>;
 }
 
-const AddProperties = ({ indexNumber, propertyName }: AddPropertiesProps) => {
+const AddProperties = ({
+  indexNumber,
+  properties,
+  newProperty,
+  handleInputChange,
+  addProperty,
+  setProperties,
+}: AddPropertiesProps) => {
   const [isEditable, setIsEditable] = useState(false);
-  const [properties, setProperties] = useState<Property[]>([]);
-  const [newProperty, setNewProperty] = useState<Property>({
-    name: "",
-    defaultValue: "",
-    dataType: "",
-    length: "",
-    lengthType: "",
-  });
-
-  // Handle input change for new property form
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setNewProperty({
-      ...newProperty,
-      [name]: value,
-    });
-  };
-
-  // Handle adding a new property
-  const addProperty = () => {
-    if (
-      indexNumber === 0 &&
-      (newProperty.name.trim() === "" ||
-        newProperty.dataType.trim() === "" ||
-        newProperty.defaultValue.trim() === "" ||
-        propertyName.trim() === "")
-    ) {
-      alert("Name, Default Vlaue and Data Type are required");
-      return;
-    } else if (
-      indexNumber === 1 &&
-      (newProperty.name.trim() === "" ||
-        newProperty.dataType.trim() === "" ||
-        newProperty.length.trim() === "" ||
-        newProperty.lengthType.trim() === "" ||
-        propertyName.trim() === "")
-    ) {
-      alert("Name, Length, Data Type and Length Type are required");
-      return;
-    }
-    setProperties([...properties, newProperty]);
-    setNewProperty({
-      name: "",
-      defaultValue: "",
-      dataType: "",
-      length: "",
-      lengthType: "",
-    }); // Reset the form
-  };
 
   return (
     <div>
@@ -79,7 +41,7 @@ const AddProperties = ({ indexNumber, propertyName }: AddPropertiesProps) => {
         {properties.length !== 0 &&
           properties.map((property, index) => (
             <Accordion.Item eventKey={index.toString()} key={index}>
-              <Accordion.Header>{propertyName}</Accordion.Header>
+              <Accordion.Header>{property.name}</Accordion.Header>
               <Accordion.Body>
                 <Row className="mb-3">
                   {/* <Form.Group as={Col} md="12" controlId="formUserId">
@@ -274,46 +236,6 @@ const AddProperties = ({ indexNumber, propertyName }: AddPropertiesProps) => {
               />
             </Form.Group>
           )}
-
-          {/* {indexNumber === 0 ? (
-            <Form.Group as={Col} md="12" controlId="formUserId">
-              <Form.Label>Data Type</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter Data Type"
-                name="dataType"
-                value={newProperty.dataType}
-                onChange={handleInputChange}
-                className="detailsForm-input"
-              />
-            </Form.Group>
-          ) : (
-            <>
-              <Form.Group as={Col} md="6" controlId="formUserId">
-                <Form.Label>Data Type</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter Data Type"
-                  name="dataType"
-                  value={newProperty.dataType}
-                  onChange={handleInputChange}
-                  className="detailsForm-input"
-                />
-              </Form.Group>
-
-              <Form.Group as={Col} md="6" controlId="formUserId">
-                <Form.Label>Length Type</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter Length Type"
-                  name="lengthType"
-                  value={newProperty.dataType}
-                  onChange={handleInputChange}
-                  className="detailsForm-input"
-                />
-              </Form.Group>
-            </>
-          )} */}
         </Row>
 
         <div className="queryBar-addMore" onClick={addProperty}>

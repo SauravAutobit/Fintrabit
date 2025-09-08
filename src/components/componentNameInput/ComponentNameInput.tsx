@@ -2,12 +2,12 @@ import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 
 interface ComponentNameInputProps {
-  propertyName: string;
-  setPropertyName: (value: string) => void;
+  componentName: string;
+  setComponentName: (value: string) => void;
 }
 const ComponentNameInput = ({
-  propertyName,
-  setPropertyName,
+  componentName,
+  setComponentName,
 }: ComponentNameInputProps) => {
   return (
     <>
@@ -18,9 +18,9 @@ const ComponentNameInput = ({
           placeholder="Enter Component Name"
           name="componentName"
           className="detailsForm-input"
-          value={propertyName}
+          value={componentName}
           onChange={(e) => {
-            setPropertyName(e.target.value);
+            setComponentName(e.target.value);
           }}
         />
       </Form.Group>

@@ -11,8 +11,13 @@ function App() {
   useEffect(() => {
     const ws = initSocket();
 
+    // return () => {
+    //   ws.close(); // cleanup on unmount
+    // };
     return () => {
-      ws.close(); // cleanup on unmount
+      if (import.meta.env.PROD) {
+        ws.close();
+      }
     };
   }, []);
 
@@ -42,4 +47,3 @@ function App() {
 }
 
 export default App;
-// ada
