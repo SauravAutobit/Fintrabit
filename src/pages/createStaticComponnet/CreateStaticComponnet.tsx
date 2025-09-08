@@ -37,23 +37,20 @@ const CreateStaticComponnet = ({
   console.log("properties", properties);
 
   // Handle input change for new property form
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setNewProperty({
-      ...newProperty,
+  const handleInputChange = (name: string, value: string) => {
+    setNewProperty((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
   };
 
   // Handle adding a new property
   const addProperty = () => {
     if (
       indexNumber === 0 &&
-      (newProperty.name.trim() === "" ||
-        newProperty.dataType.trim() === "" ||
-        newProperty.defaultValue.trim() === "")
+      (newProperty.name.trim() === "" || newProperty.dataType.trim() === "")
     ) {
-      alert("Name, Default Vlaue and Data Type are required");
+      alert("Name and Data Type are required");
       return;
     } else if (
       indexNumber === 1 &&
@@ -110,7 +107,10 @@ const CreateStaticComponnet = ({
         properties: allProperties.map((p) => ({
           key: p.name.trim().toLowerCase(),
           datatype: p.dataType.trim().toLowerCase(),
-          default: p.defaultValue.trim().toLowerCase(),
+          default:
+            p.defaultValue.trim() === ""
+              ? "-"
+              : p.defaultValue.trim().toLowerCase(),
           length: p.length.trim().toLowerCase(),
           lengthType: p.lengthType.trim().toLowerCase(),
         })),
@@ -149,10 +149,10 @@ const CreateStaticComponnet = ({
         <AddProperties
           indexNumber={index}
           properties={properties}
-          newProperty={newProperty}
-          handleInputChange={handleInputChange} // Pass the handler down
-          addProperty={addProperty} // Pass the add function down
           setProperties={setProperties}
+          newProperty={newProperty}
+          onHandleInputChange={handleInputChange} // Pass the handler down
+          onAddProperty={addProperty} // Pass the add function down
         />
       </div>
 

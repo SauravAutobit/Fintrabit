@@ -6,6 +6,9 @@ import Accordion from "react-bootstrap/Accordion";
 import EditDelete from "../editDelete/EditDelete";
 import { useState } from "react";
 
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
+
 interface Property {
   name: string;
   defaultValue: string;
@@ -18,8 +21,8 @@ interface AddPropertiesProps {
   indexNumber: number;
   properties: Property[];
   newProperty: Property; // The property currently being typed
-  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // Handler for the form
-  addProperty: () => void; // Function to add the property to the list
+  onHandleInputChange: (name: string, value: string) => void;
+  onAddProperty: () => void; // Function to add the property to the list
   setProperties: React.Dispatch<React.SetStateAction<Property[]>>;
 }
 
@@ -27,11 +30,16 @@ const AddProperties = ({
   indexNumber,
   properties,
   newProperty,
-  handleInputChange,
-  addProperty,
+  onHandleInputChange,
+  onAddProperty,
   setProperties,
 }: AddPropertiesProps) => {
   const [isEditable, setIsEditable] = useState(false);
+
+  const deleteProperty = (indexToDelete: number) => {
+    const remaining = properties.filter((_, index) => index !== indexToDelete);
+    setProperties(remaining);
+  };
 
   return (
     <div>
@@ -43,30 +51,6 @@ const AddProperties = ({
             <Accordion.Item eventKey={index.toString()} key={index}>
               <Accordion.Header>{property.name}</Accordion.Header>
               <Accordion.Body>
-                <Row className="mb-3">
-                  {/* <Form.Group as={Col} md="12" controlId="formUserId">
-                    <Form.Label>Property Name</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter Property Name"
-                      name="propertyName"
-                      value={property.name}
-                      onChange={(e) => {
-                        if (isEditable) {
-                          const updatedProperties = [...properties];
-                          updatedProperties[index].dataType = e.target.value;
-                          setProperties(updatedProperties);
-                        }
-                      }}
-                      disabled={!isEditable}
-                      className={
-                        isEditable
-                          ? "detailsForm-input"
-                          : "detailsForm-input-disabled"
-                      }
-                    />
-                  </Form.Group> */}
-                </Row>
                 <Row className="mb-3">
                   <Form.Group as={Col} md="6" controlId="formUserId">
                     <Form.Label>Name</Form.Label>
@@ -127,7 +111,7 @@ const AddProperties = ({
                       onChange={(e) => {
                         if (isEditable) {
                           const updatedProperties = [...properties];
-                          updatedProperties[index].name = e.target.value;
+                          updatedProperties[index].dataType = e.target.value;
                           setProperties(updatedProperties);
                         }
                       }}
@@ -139,34 +123,13 @@ const AddProperties = ({
                       }
                     />
                   </Form.Group>
-
-                  {/* <Form.Group as={Col} md="6" controlId="formip">
-                    <Form.Label>Visible to</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter Default Value"
-                      name="defaultValue"
-                      value={property.defaultValue}
-                      onChange={(e) => {
-                        if (isEditable) {
-                          const updatedProperties = [...properties];
-                          updatedProperties[index].defaultValue =
-                            e.target.value;
-                          setProperties(updatedProperties);
-                        }
-                      }}
-                      disabled={!isEditable}
-                      className={
-                        isEditable
-                          ? "detailsForm-input"
-                          : "detailsForm-input-disabled"
-                      }
-                    />
-                  </Form.Group> */}
                 </Row>
 
                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                  <EditDelete enableEdit={() => setIsEditable(true)} />
+                  <EditDelete
+                    enableEdit={() => setIsEditable(true)}
+                    onDelete={() => deleteProperty(index)}
+                  />
                 </div>
               </Accordion.Body>
             </Accordion.Item>
@@ -182,7 +145,9 @@ const AddProperties = ({
               placeholder="Enter key"
               name="name"
               value={newProperty.name}
-              onChange={handleInputChange}
+              onChange={(e) =>
+                onHandleInputChange(e.target.name, e.target.value)
+              }
               className="detailsForm-input"
             />
           </Form.Group>
@@ -202,7 +167,9 @@ const AddProperties = ({
                   ? newProperty.defaultValue
                   : newProperty.length
               }
-              onChange={handleInputChange}
+              onChange={(e) =>
+                onHandleInputChange(e.target.name, e.target.value)
+              }
               className="detailsForm-input"
             />
           </Form.Group>
@@ -214,14 +181,35 @@ const AddProperties = ({
             controlId="formUserId"
           >
             <Form.Label>Data Type</Form.Label>
-            <Form.Control
+            {/* <Form.Control
               type="text"
               placeholder="Enter Data Type"
               name="dataType"
               value={newProperty.dataType}
-              onChange={handleInputChange}
+              onChange={onHandleInputChange}
               className="detailsForm-input"
-            />
+            /> */}
+            <DropdownButton
+              id="dropdown-datatype"
+              title={newProperty.dataType || "Select Data Type"}
+              className="dropDown-btn"
+            >
+              <Dropdown.Item
+                onClick={() => onHandleInputChange("dataType", "int")}
+              >
+                int
+              </Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => onHandleInputChange("dataType", "numeric")}
+              >
+                numeric
+              </Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => onHandleInputChange("dataType", "string")}
+              >
+                string
+              </Dropdown.Item>
+            </DropdownButton>
           </Form.Group>
           {indexNumber === 1 && (
             <Form.Group as={Col} md="6" controlId="formUserId">
@@ -231,14 +219,16 @@ const AddProperties = ({
                 placeholder="Enter Length Type"
                 name="lengthType"
                 value={newProperty.lengthType}
-                onChange={handleInputChange}
+                onChange={(e) =>
+                  onHandleInputChange(e.target.name, e.target.value)
+                }
                 className="detailsForm-input"
               />
             </Form.Group>
           )}
         </Row>
 
-        <div className="queryBar-addMore" onClick={addProperty}>
+        <div className="queryBar-addMore" onClick={onAddProperty}>
           + Add another property
         </div>
       </div>

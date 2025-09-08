@@ -3,9 +3,10 @@ import deleteIcon from "../../assets/icons/deleteIcon.svg";
 
 interface EditDeleteProps {
   enableEdit: () => void;
+  onDelete: () => void;
 }
 
-const EditDelete = ({ enableEdit }: EditDeleteProps) => {
+const EditDelete = ({ enableEdit, onDelete }: EditDeleteProps) => {
   return (
     <>
       <div className="queryDetails-btn-container">
@@ -13,7 +14,7 @@ const EditDelete = ({ enableEdit }: EditDeleteProps) => {
           <img src={edit} alt="edit" />
           Edit
         </div>
-        <div className="queryDetails-delete">
+        <div className="queryDetails-delete" onClick={onDelete}>
           Delete
           <img src={deleteIcon} alt="deleteIcon" width={14} height={16} />
         </div>
