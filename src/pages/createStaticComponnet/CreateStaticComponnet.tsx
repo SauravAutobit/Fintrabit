@@ -98,7 +98,7 @@ const CreateStaticComponnet = ({
 
     // 1. Gather all the data from your form states
     const message = {
-      rid: "sjdd",
+      rid: crypto.randomUUID(),
       target: "instrument/category/create",
       session: "xyz",
       payload: {
