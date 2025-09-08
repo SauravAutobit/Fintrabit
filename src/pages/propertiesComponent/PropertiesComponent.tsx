@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SubHeaderOptions from "../../components/subHeaderOptions/SubHeaderOptions";
-// import NoDataList from "../../components/noDataList/NoDataList";
-// import noUserList from "../../assets/icons/noUserList.svg";
-// import { Routing } from "../../utils/constants/routes.constants";
+import NoDataList from "../../components/noDataList/NoDataList";
+import noUserList from "../../assets/icons/noUserList.svg";
 
 import Accordion from "react-bootstrap/Accordion";
 import Col from "react-bootstrap/Col";
@@ -11,125 +10,479 @@ import Row from "react-bootstrap/Row";
 
 import EditDelete from "../../components/editDelete/EditDelete";
 
-import "./PropertiesComponent.css"; // We'll add this for spacing
+import "./PropertiesComponent.css";
 import CreateStaticComponnet from "../createStaticComponnet/CreateStaticComponnet";
+import {
+  addMessageListener,
+  getConnectionState,
+  sendMessage,
+} from "../../socket";
+import { Dropdown, DropdownButton } from "react-bootstrap";
+// import { addMessageListener, sendMessage } from "../../socket";
+
+// Define the shape of our data
+interface Property {
+  key: string;
+  datatype: string;
+  default: string;
+  length?: string;
+  length_type?: string;
+}
+
+interface ComponentData {
+  id: string;
+  name: string;
+  properties: Property[];
+  type: string;
+}
+
 const PropertiesComponent = () => {
   const [selectedTab, setSelectedTab] = useState(0);
-  const [clicked, setClicked] = useState(false);
+  const [isCreateMode, setCreateMode] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [components, setComponents] = useState<ComponentData[]>([]);
 
-  // Dummy state to make the inputs inside the accordion work
-  const [isEditable, setIsEditable] = useState(false);
+  // const [editableIndex, setEditableIndex] = useState<number | null>(null);
+  // const [lastRequestId, setLastRequestId] = useState<string | null>(null);
 
-  // This is our static dummy data for the properties
-  const staticProperties = [
-    { name: "stsf", dataType: "sfs", defaultValue: "scdf" },
-    { name: "property_2", dataType: "string", defaultValue: "value_2" },
-    { name: "property_3", dataType: "number", defaultValue: "123" },
-  ];
+  // State to manage which specific property is being edited
+  const [editableState, setEditableState] = useState<{
+    componentIndex: number | null;
+    propertyIndex: number | null;
+  }>({ componentIndex: null, propertyIndex: null });
 
-  console.log("clicked", clicked);
+  useEffect(() => {
+    setIsLoading(true);
+    setComponents([]);
+
+    const rid = crypto.randomUUID();
+    const componentType = selectedTab === 0 ? "static" : "dinamic";
+
+    const message = {
+      rid,
+      target: "fetch",
+      session: "xyz",
+      payload: {
+        query: `fintrabit.instrument_categories[type="${componentType}"]`,
+      },
+    };
+
+    const trySendMessage = () => {
+      // Check if the socket is ready
+      if (getConnectionState() === WebSocket.OPEN) {
+        console.log("Socket is open. Requesting component list:", message);
+        sendMessage(message);
+      } else {
+        // If not ready, wait a bit and try again
+        console.log("Socket not open, waiting to send...");
+        setTimeout(trySendMessage, 100); // Retry every 100ms
+      }
+    };
+
+    // Start the process
+    trySendMessage();
+
+    const removeListener = addMessageListener((data) => {
+      if (data.rid === rid && data.payload?.status === "success") {
+        console.log("✅ Component list received:", data.payload.data);
+        setComponents(data.payload.data as ComponentData[]);
+        setIsLoading(false);
+      } else if (data.rid === rid) {
+        console.error("Failed to fetch component list:", data.payload?.message);
+        setIsLoading(false);
+      }
+    });
+
+    return () => {
+      removeListener();
+    }; // Cleanup listener
+  }, [selectedTab]);
+
+  const handlePropertyUpdate = (
+    componentIndex: number,
+    propertyIndex: number,
+    field: keyof Property,
+    value: string
+  ) => {
+    const updatedComponents = [...components];
+    updatedComponents[componentIndex].properties[propertyIndex] = {
+      ...updatedComponents[componentIndex].properties[propertyIndex],
+      [field]: value,
+    };
+    setComponents(updatedComponents);
+  };
+
+  const deleteProperty = (
+    componentIndex: number,
+    propertyIndexToDelete: number
+  ) => {
+    const updatedComponents = components.map((comp, idx) => {
+      if (idx === componentIndex) {
+        return {
+          ...comp,
+          properties: comp.properties.filter(
+            (_, propIdx) => propIdx !== propertyIndexToDelete
+          ),
+        };
+      }
+      return comp;
+    });
+    setComponents(updatedComponents);
+    // TODO: Send a "delete" WebSocket message to the server here
+  };
+
+  const saveProperty = (componentIndex: number, propertyIndex: number) => {
+    setEditableState({ componentIndex: null, propertyIndex: null });
+    const propertyToSave = components[componentIndex].properties[propertyIndex];
+    console.log("Saving property:", propertyToSave);
+    // TODO: Send an "update" WebSocket message to the server here
+  };
+
+  if (isCreateMode) {
+    return (
+      <CreateStaticComponnet
+        index={selectedTab}
+        onBack={() => setCreateMode(false)}
+      />
+    );
+  }
   return (
     <>
-      {!clicked ? (
-        <>
-          <SubHeaderOptions
-            options={[
-              "Static Properties Component",
-              "Dynamic Properties Component",
-            ]}
-            selectedTab={selectedTab}
-            setSelectedTab={setSelectedTab}
-            showBtn={true}
-            btnText="+ Create Component"
-            onClick={() => setClicked(true)}
-          />
-          {/* ## Outer Accordion for the main component ## */}
-          <Accordion
-            className="component-list-accordion properties-accordion"
-            defaultActiveKey="0"
-          >
-            <Accordion.Item eventKey="0">
-              <Accordion.Header>Component 1</Accordion.Header>
+      <SubHeaderOptions
+        options={[
+          "Static Properties Component",
+          "Dynamic Properties Component",
+        ]}
+        selectedTab={selectedTab}
+        setSelectedTab={setSelectedTab}
+        showBtn={true}
+        btnText="+ Create Component"
+        onClick={() => setCreateMode(true)}
+      />
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : components.length === 0 ? (
+        <NoDataList
+          image={noUserList}
+          text={"You don't have any user yet"}
+          imageAlt={"no user list"}
+        />
+      ) : (
+        <Accordion
+          className="component-list-accordion properties-accordion"
+          alwaysOpen
+        >
+          {components.map((component, componentIndex) => (
+            <Accordion.Item
+              eventKey={String(componentIndex)}
+              key={component.id}
+            >
+              <Accordion.Header>{component.name}</Accordion.Header>
               <Accordion.Body>
-                {/* ## Inner Accordion for the properties ## */}
-                {/* We reuse 'properties-accordion' class to match your existing styles */}
-                <Accordion className="properties-accordion">
-                  {staticProperties.map((property, index) => (
-                    <Accordion.Item eventKey={index.toString()} key={index}>
-                      <Accordion.Header>{property.name}</Accordion.Header>
-                      <Accordion.Body>
-                        {/* This form is copied from your AddProperties component */}
-                        <Row className="mb-3">
-                          <Form.Group as={Col} md="12">
-                            <Form.Label>Data Type</Form.Label>
-                            <Form.Control
-                              type="text"
-                              defaultValue={property.dataType}
-                              disabled={!isEditable}
-                              className={
-                                isEditable
-                                  ? "detailsForm-input"
-                                  : "detailsForm-input-disabled"
-                              }
-                            />
-                          </Form.Group>
-                        </Row>
-                        <Row className="mb-3">
-                          <Form.Group as={Col} md="6">
-                            <Form.Label>Name</Form.Label>
-                            <Form.Control
-                              type="text"
-                              defaultValue={property.name}
-                              disabled={!isEditable}
-                              className={
-                                isEditable
-                                  ? "detailsForm-input"
-                                  : "detailsForm-input-disabled"
-                              }
-                            />
-                          </Form.Group>
-                          <Form.Group as={Col} md="6">
-                            <Form.Label>Default Value</Form.Label>
-                            <Form.Control
-                              type="text"
-                              defaultValue={property.defaultValue}
-                              disabled={!isEditable}
-                              className={
-                                isEditable
-                                  ? "detailsForm-input"
-                                  : "detailsForm-input-disabled"
-                              }
-                            />
-                          </Form.Group>
-                        </Row>
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "flex-end",
-                          }}
+                {component.properties.length > 0 ? (
+                  <Accordion className="properties-accordion">
+                    {component.properties.map((property, propertyIndex) => {
+                      const isCurrentlyEditing =
+                        editableState.componentIndex === componentIndex &&
+                        editableState.propertyIndex === propertyIndex;
+
+                      return (
+                        <Accordion.Item
+                          eventKey={String(propertyIndex)}
+                          key={propertyIndex}
                         >
-                          <EditDelete enableEdit={() => setIsEditable(true)} />
-                        </div>
-                      </Accordion.Body>
-                    </Accordion.Item>
-                  ))}
-                </Accordion>
+                          <Accordion.Header>{property.key}</Accordion.Header>
+                          <Accordion.Body>
+                            {/* --- STATIC property display with Dropdown --- */}
+                            {component.type === "static" && (
+                              <>
+                                <Row className="mb-3">
+                                  <Form.Group as={Col} md={6}>
+                                    <Form.Label>Name</Form.Label>
+                                    <Form.Control
+                                      type="text"
+                                      defaultValue={property.key}
+                                      disabled={!isCurrentlyEditing}
+                                      onChange={(e) =>
+                                        handlePropertyUpdate(
+                                          componentIndex,
+                                          propertyIndex,
+                                          "key",
+                                          e.target.value
+                                        )
+                                      }
+                                      className={
+                                        isCurrentlyEditing
+                                          ? "detailsForm-input"
+                                          : "detailsForm-input-disabled"
+                                      }
+                                    />
+                                  </Form.Group>
+                                  <Form.Group as={Col} md={6}>
+                                    <Form.Label>Default Value</Form.Label>
+                                    <Form.Control
+                                      type="text"
+                                      defaultValue={property.default}
+                                      disabled={!isCurrentlyEditing}
+                                      onChange={(e) =>
+                                        handlePropertyUpdate(
+                                          componentIndex,
+                                          propertyIndex,
+                                          "default",
+                                          e.target.value
+                                        )
+                                      }
+                                      className={
+                                        isCurrentlyEditing
+                                          ? "detailsForm-input"
+                                          : "detailsForm-input-disabled"
+                                      }
+                                    />
+                                  </Form.Group>
+                                </Row>
+                                <Row>
+                                  <Form.Group as={Col} md={12}>
+                                    <Form.Label>Data Type</Form.Label>
+                                    <DropdownButton
+                                      id={`dropdown-datatype-${propertyIndex}`}
+                                      title={property.datatype || "Select"}
+                                      className={
+                                        isCurrentlyEditing
+                                          ? "dropDown-btn"
+                                          : "detailsForm-input-disabled"
+                                      }
+                                      disabled={!isCurrentlyEditing}
+                                    >
+                                      <Dropdown.Item
+                                        onClick={() =>
+                                          handlePropertyUpdate(
+                                            componentIndex,
+                                            propertyIndex,
+                                            "datatype",
+                                            "int"
+                                          )
+                                        }
+                                      >
+                                        int
+                                      </Dropdown.Item>
+                                      <Dropdown.Item
+                                        onClick={() =>
+                                          handlePropertyUpdate(
+                                            componentIndex,
+                                            propertyIndex,
+                                            "datatype",
+                                            "numeric"
+                                          )
+                                        }
+                                      >
+                                        numeric
+                                      </Dropdown.Item>
+                                      <Dropdown.Item
+                                        onClick={() =>
+                                          handlePropertyUpdate(
+                                            componentIndex,
+                                            propertyIndex,
+                                            "datatype",
+                                            "string"
+                                          )
+                                        }
+                                      >
+                                        string
+                                      </Dropdown.Item>
+                                    </DropdownButton>
+                                  </Form.Group>
+                                </Row>
+                              </>
+                            )}
+
+                            {/* --- DYNAMIC property display with Dropdowns --- */}
+                            {component.type === "dynamic" && (
+                              <>
+                                <Row className="mb-3">
+                                  <Form.Group as={Col} md={6}>
+                                    <Form.Label>Name</Form.Label>
+                                    <Form.Control
+                                      type="text"
+                                      defaultValue={property.key}
+                                      disabled={!isCurrentlyEditing}
+                                      onChange={(e) =>
+                                        handlePropertyUpdate(
+                                          componentIndex,
+                                          propertyIndex,
+                                          "key",
+                                          e.target.value
+                                        )
+                                      }
+                                      className={
+                                        isCurrentlyEditing
+                                          ? "detailsForm-input"
+                                          : "detailsForm-input-disabled"
+                                      }
+                                    />
+                                  </Form.Group>
+                                  <Form.Group as={Col} md={6}>
+                                    <Form.Label>Length</Form.Label>
+                                    <Form.Control
+                                      type="number"
+                                      defaultValue={property.length}
+                                      disabled={!isCurrentlyEditing}
+                                      onChange={(e) =>
+                                        handlePropertyUpdate(
+                                          componentIndex,
+                                          propertyIndex,
+                                          "length",
+                                          e.target.value
+                                        )
+                                      }
+                                      className={
+                                        isCurrentlyEditing
+                                          ? "detailsForm-input"
+                                          : "detailsForm-input-disabled"
+                                      }
+                                    />
+                                  </Form.Group>
+                                </Row>
+                                <Row>
+                                  <Form.Group as={Col} md={6}>
+                                    <Form.Label>Data Type</Form.Label>
+                                    <DropdownButton
+                                      id={`dropdown-datatype-${propertyIndex}`}
+                                      title={property.datatype || "Select"}
+                                      className={
+                                        isCurrentlyEditing
+                                          ? "dropDown-btn"
+                                          : "detailsForm-input-disabled"
+                                      }
+                                      disabled={!isCurrentlyEditing}
+                                    >
+                                      <Dropdown.Item
+                                        onClick={() =>
+                                          handlePropertyUpdate(
+                                            componentIndex,
+                                            propertyIndex,
+                                            "datatype",
+                                            "int"
+                                          )
+                                        }
+                                      >
+                                        int
+                                      </Dropdown.Item>
+                                      <Dropdown.Item
+                                        onClick={() =>
+                                          handlePropertyUpdate(
+                                            componentIndex,
+                                            propertyIndex,
+                                            "datatype",
+                                            "numeric"
+                                          )
+                                        }
+                                      >
+                                        numeric
+                                      </Dropdown.Item>
+                                      <Dropdown.Item
+                                        onClick={() =>
+                                          handlePropertyUpdate(
+                                            componentIndex,
+                                            propertyIndex,
+                                            "datatype",
+                                            "string"
+                                          )
+                                        }
+                                      >
+                                        string
+                                      </Dropdown.Item>
+                                    </DropdownButton>
+                                  </Form.Group>
+                                  <Form.Group as={Col} md={6}>
+                                    <Form.Label>Length Type</Form.Label>
+                                    <DropdownButton
+                                      id={`dropdown-lengthtype-${propertyIndex}`}
+                                      title={property.length_type || "Select"}
+                                      className={
+                                        isCurrentlyEditing
+                                          ? "dropDown-btn"
+                                          : "detailsForm-input-disabled"
+                                      }
+                                      disabled={!isCurrentlyEditing}
+                                    >
+                                      <Dropdown.Item
+                                        onClick={() =>
+                                          handlePropertyUpdate(
+                                            componentIndex,
+                                            propertyIndex,
+                                            "length_type",
+                                            "upto"
+                                          )
+                                        }
+                                      >
+                                        upto
+                                      </Dropdown.Item>
+                                      <Dropdown.Item
+                                        onClick={() =>
+                                          handlePropertyUpdate(
+                                            componentIndex,
+                                            propertyIndex,
+                                            "length_type",
+                                            "exact"
+                                          )
+                                        }
+                                      >
+                                        exact
+                                      </Dropdown.Item>
+                                      <Dropdown.Item
+                                        onClick={() =>
+                                          handlePropertyUpdate(
+                                            componentIndex,
+                                            propertyIndex,
+                                            "length_type",
+                                            "infinite"
+                                          )
+                                        }
+                                      >
+                                        infinite
+                                      </Dropdown.Item>
+                                    </DropdownButton>
+                                  </Form.Group>
+                                </Row>
+                              </>
+                            )}
+
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "flex-end",
+                                marginTop: "1rem",
+                              }}
+                            >
+                              <EditDelete
+                                isEditing={isCurrentlyEditing}
+                                onEdit={() =>
+                                  setEditableState({
+                                    componentIndex,
+                                    propertyIndex,
+                                  })
+                                }
+                                onSave={() =>
+                                  saveProperty(componentIndex, propertyIndex)
+                                }
+                                onDelete={() =>
+                                  deleteProperty(componentIndex, propertyIndex)
+                                }
+                              />
+                            </div>
+                          </Accordion.Body>
+                        </Accordion.Item>
+                      );
+                    })}
+                  </Accordion>
+                ) : (
+                  <p>This component has no properties.</p>
+                )}
               </Accordion.Body>
             </Accordion.Item>
-          </Accordion>
-        </>
-      ) : (
-        <CreateStaticComponnet
-          index={selectedTab}
-          onBack={() => setClicked(false)}
-        />
+          ))}
+        </Accordion>
       )}
-
-      {/* <NoDataList
-        image={noUserList}
-        text={"You don't have any user yet"}
-        imageAlt={"no user list"}
-      /> */}
     </>
   );
 };

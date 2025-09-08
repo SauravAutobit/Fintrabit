@@ -16,6 +16,11 @@ let socket: WebSocket | null = null;
 // This array will hold all the callback functions from our components
 const listeners: ((data: SocketMessage) => void)[] = [];
 
+// This function is what we'll use to check the status
+export const getConnectionState = () => {
+  return socket?.readyState;
+};
+
 export function initSocket(): WebSocket {
   if (!socket || socket.readyState === WebSocket.CLOSED) {
     socket = new WebSocket(WEBSOCKET_URL); 
