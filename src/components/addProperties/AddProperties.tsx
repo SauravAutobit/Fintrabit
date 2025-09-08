@@ -181,14 +181,6 @@ const AddProperties = ({
             controlId="formUserId"
           >
             <Form.Label>Data Type</Form.Label>
-            {/* <Form.Control
-              type="text"
-              placeholder="Enter Data Type"
-              name="dataType"
-              value={newProperty.dataType}
-              onChange={onHandleInputChange}
-              className="detailsForm-input"
-            /> */}
             <DropdownButton
               id="dropdown-datatype"
               title={newProperty.dataType || "Select Data Type"}
@@ -214,16 +206,27 @@ const AddProperties = ({
           {indexNumber === 1 && (
             <Form.Group as={Col} md="6" controlId="formUserId">
               <Form.Label>Length Type</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter Length Type"
-                name="lengthType"
-                value={newProperty.lengthType}
-                onChange={(e) =>
-                  onHandleInputChange(e.target.name, e.target.value)
-                }
-                className="detailsForm-input"
-              />
+              <DropdownButton
+                id="dropdown-lengthType"
+                title={newProperty.lengthType || "Select Length"}
+                className="dropDown-btn"
+              >
+                <Dropdown.Item
+                  onClick={() => onHandleInputChange("lengthType", "upto")}
+                >
+                  upto
+                </Dropdown.Item>
+                <Dropdown.Item
+                  onClick={() => onHandleInputChange("lengthType", "exact")}
+                >
+                  exact
+                </Dropdown.Item>
+                <Dropdown.Item
+                  onClick={() => onHandleInputChange("lengthType", "infinite")}
+                >
+                  infinite
+                </Dropdown.Item>
+              </DropdownButton>
             </Form.Group>
           )}
         </Row>

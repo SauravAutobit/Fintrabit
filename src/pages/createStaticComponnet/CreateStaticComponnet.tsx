@@ -35,7 +35,6 @@ const CreateStaticComponnet = ({
   const [lastRequestId, setLastRequestId] = useState<string | null>(null);
 
   const indexNumber = index;
-  console.log("properties", properties);
 
   // Handle input change for new property form
   const handleInputChange = (name: string, value: string) => {
@@ -47,21 +46,38 @@ const CreateStaticComponnet = ({
 
   // Handle adding a new property
   const addProperty = () => {
-    if (
-      indexNumber === 0 &&
-      (newProperty.name.trim() === "" || newProperty.dataType.trim() === "")
-    ) {
-      alert("Name and Data Type are required");
-      return;
-    } else if (
-      indexNumber === 1 &&
-      (newProperty.name.trim() === "" ||
+    // --- Static Type Validation ---
+    if (indexNumber === 0) {
+      if (
+        newProperty.name.trim() === "" ||
+        newProperty.dataType.trim() === ""
+      ) {
+        alert("Name and Data Type are required");
+        return;
+      }
+    }
+    // --- Dynamic Type Validation ---
+    else if (indexNumber === 1) {
+      // First, check the simple text fields
+      if (
+        newProperty.name.trim() === "" ||
         newProperty.dataType.trim() === "" ||
+        newProperty.lengthType.trim() === ""
+      ) {
+        alert("Name, Data Type, and Length Type are required");
+        return;
+      }
+
+      // Now, specifically validate the length
+      const lengthValue = parseInt(newProperty.length);
+      if (
         newProperty.length.trim() === "" ||
-        newProperty.lengthType.trim() === "")
-    ) {
-      alert("Name, Length, Data Type and Length Type are required");
-      return;
+        isNaN(lengthValue) ||
+        lengthValue < 1
+      ) {
+        alert("A valid Length (minimum 1) is required");
+        return;
+      }
     }
     setProperties([...properties, newProperty]);
     setNewProperty({
@@ -79,15 +95,46 @@ const CreateStaticComponnet = ({
       alert("Component Name is required.");
       return;
     }
+    const allProperties = [...properties]; // Start with the properties already added
 
     // Check if the user has typed a property but not added it yet
-    const isNewPropertyFilled =
-      newProperty.name.trim() !== "" && newProperty.dataType.trim() !== "";
+    const isNewPropertyPartiallyFilled =
+      newProperty.name.trim() !== "" ||
+      newProperty.dataType.trim() !== "" ||
+      newProperty.defaultValue.trim() !== "" ||
+      newProperty.length.trim() !== "" ||
+      newProperty.lengthType.trim() !== "";
 
-    // Combine the existing properties list with the one currently being typed
-    const allProperties = isNewPropertyFilled
-      ? [...properties, newProperty]
-      : [...properties];
+    if (isNewPropertyPartiallyFilled) {
+      // If they have, run the SAME strict validation as the 'addProperty' function
+      if (indexNumber === 0) {
+        if (
+          newProperty.name.trim() === "" ||
+          newProperty.dataType.trim() === ""
+        ) {
+          alert(
+            "The property you are currently adding is incomplete. Please fill in Name and Data Type."
+          );
+          return;
+        }
+      } else if (indexNumber === 1) {
+        const lengthValue = parseInt(newProperty.length);
+        if (
+          newProperty.name.trim() === "" ||
+          newProperty.dataType.trim() === "" ||
+          newProperty.lengthType.trim() === "" ||
+          isNaN(lengthValue) ||
+          lengthValue < 1
+        ) {
+          alert(
+            "The property you are currently adding is incomplete. Please fill in Name, Data Type, Length Type, and a valid Length (minimum 1)."
+          );
+          return;
+        }
+      }
+      // If the new property is valid, add it to our list for submission
+      allProperties.push(newProperty);
+    }
 
     if (allProperties.length === 0) {
       alert("Please add at least one property.");
@@ -101,11 +148,14 @@ const CreateStaticComponnet = ({
     // 1. Gather all the data from your form states
     const message = {
       rid: newRid,
-      target: "instrument/category/create",
+      target:
+        indexNumber === 0
+          ? "instrument/category/create"
+          : "instrument/category/dinamic/create",
       session: "xyz",
       payload: {
         name: componentName.trim().toLowerCase(),
-        type: index === 0 ? "static" : "dynamic",
+        type: indexNumber === 0 ? "static" : "dinamic",
         properties: allProperties.map((p) => ({
           key: p.name.trim().toLowerCase(),
           datatype: p.dataType.trim().toLowerCase(),
@@ -114,7 +164,7 @@ const CreateStaticComponnet = ({
               ? "-"
               : p.defaultValue.trim().toLowerCase(),
           length: p.length.trim().toLowerCase(),
-          lengthType: p.lengthType.trim().toLowerCase(),
+          length_type: p.lengthType.trim().toLowerCase(),
         })),
       },
     };
