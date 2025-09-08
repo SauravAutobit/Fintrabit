@@ -19,7 +19,7 @@ export const sidebarOptions = [
   {
     title: "Instrument Management",
     children: [
-      { name: "Properties Component", link: Routing.propertiesComponent },
+      { name: "Properties Component", link: Routing.home },
       { name: "Instruments", link: Routing.instruments },
     ],
   },

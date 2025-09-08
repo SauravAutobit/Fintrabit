@@ -1,23 +1,28 @@
-// import BackButton from "../backButton/BackButton";
 import Button from "../button/Button";
 import "./SubFooter.css";
 
 interface SubFooterProps {
-  btnText: string;
+  saveBtnText: string;
   backBtnText: string;
-  btnRoute: string;
+  onSaveClick: () => void;
+  onBackClick: () => void;
 }
-const SubFooter = ({ btnText, backBtnText, btnRoute }: SubFooterProps) => {
+const SubFooter = ({
+  saveBtnText,
+  backBtnText,
+  onSaveClick,
+  onBackClick,
+}: SubFooterProps) => {
   return (
     <div className="subfooter-container">
-      {/* <BackButton label={backBtnText} btn /> */}
       <Button
         label={backBtnText}
-        btnRoute={btnRoute}
+        onClick={onBackClick}
         bgColor="var(--secondary-btn-color)"
         textColor="var(--secondary-color)"
       />
-      <Button label={btnText} btnRoute={btnRoute} />
+
+      <Button label={saveBtnText} onClick={onSaveClick} />
     </div>
   );
 };

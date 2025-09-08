@@ -1,11 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import Header from "./components/header/Header";
 import Sidebar from "./components/sidebar/Sidebar";
 import { Outlet } from "react-router-dom";
+import { initSocket } from "./socket";
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    const ws = initSocket();
+
+    return () => {
+      ws.close(); // cleanup on unmount
+    };
+  }, []);
 
   return (
     <div>

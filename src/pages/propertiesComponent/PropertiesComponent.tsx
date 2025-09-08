@@ -121,7 +121,7 @@ const PropertiesComponent = () => {
       ) : (
         <CreateStaticComponnet
           index={selectedTab}
-          onClick={() => setClicked(false)}
+          onBack={() => setClicked(false)}
         />
       )}
 
