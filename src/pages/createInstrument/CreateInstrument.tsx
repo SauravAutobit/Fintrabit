@@ -14,7 +14,7 @@ import CustomTimePicker from "../../components/customTimePicker/CustomTimePicker
 
 const CreateInstrument = () => {
   const [dropdownText, setDropdownText] = useState("Select EUR/EUR/etc");
-  const [iconFile, setIconFile] = useState<File | null>(null);
+  const [iconFile, setIconFile] = useState<string | null>(null);
   const [isCreateMode, setCreateMode] = useState(false);
   const [time, setTime] = useState("");
 
@@ -42,6 +42,7 @@ const CreateInstrument = () => {
   //   console.log("This is the data that would be saved!");
   // };
 
+  console.log("iconFile", iconFile);
   const selectedTab = 0;
   const dummySetSelectedTab = () => {}; // no-op
 

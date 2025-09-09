@@ -9,8 +9,17 @@ import upload from "../../assets/icons/upload.svg"; // Add your icon path
 import close from "../../assets/icons/close.svg"; // Add your icon path
 
 interface FileUploadProps {
-  onFileSelect: (file: File | null) => void;
+  onFileSelect: (base64: string | null) => void;
 }
+
+// --- Configuration for Validation ---
+const MAX_FILE_SIZE_KB = 50; // Max size: 50 Kilobytes
+const ALLOWED_FILE_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/svg+xml",
+  "image/webp",
+];
 
 const FileUpload = ({ onFileSelect }: FileUploadProps) => {
   const [file, setFile] = useState<File | null>(null);
@@ -22,15 +31,26 @@ const FileUpload = ({ onFileSelect }: FileUploadProps) => {
 
   // This effect simulates the upload progress
   useEffect(() => {
-    if (status === "uploading") {
+    if (status === "uploading" && file) {
       const timer = setInterval(() => {
         setProgress((prev) => {
           if (prev >= 100) {
             clearInterval(timer);
             setStatus("completed");
-            if (file) {
-              onFileSelect(file); // Notify parent component that upload is done
-            }
+
+            // --- CONVERT TO BASE64 ON COMPLETION ---
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+              const base64String = reader.result as string;
+              onFileSelect(base64String); // Notify parent with the Base64 string
+            };
+            reader.onerror = (error) => {
+              console.error("Error converting file to Base64:", error);
+              onFileSelect(null);
+            };
+            // --- END OF CONVERSION LOGIC ---
+
             return 100;
           }
           return prev + 10;
@@ -41,8 +61,30 @@ const FileUpload = ({ onFileSelect }: FileUploadProps) => {
   }, [status, file, onFileSelect]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setFile(e.target.files[0]);
+    const selectedFile = e.target.files?.[0];
+
+    if (selectedFile) {
+      // --- VALIDATION LOGIC ---
+      // 1. Check File Type
+      if (!ALLOWED_FILE_TYPES.includes(selectedFile.type)) {
+        alert(`Invalid file type. Please select a PNG, JPG, WEBP, or SVG.`);
+        if (inputRef.current) inputRef.current.value = "";
+        return;
+      }
+
+      // 2. Check File Size
+      const fileSizeKB = selectedFile.size / 1024;
+      if (fileSizeKB > MAX_FILE_SIZE_KB) {
+        alert(
+          `File is too large. Please select a file smaller than ${MAX_FILE_SIZE_KB} KB.`
+        );
+        if (inputRef.current) inputRef.current.value = "";
+        return;
+      }
+      // --- END OF VALIDATION ---
+
+      // If validation passes, start the upload process
+      setFile(selectedFile);
       setProgress(0);
       setStatus("uploading");
     }
@@ -93,6 +135,7 @@ const FileUpload = ({ onFileSelect }: FileUploadProps) => {
               onChange={handleFileChange}
               ref={inputRef}
               style={{ display: "none" }}
+              accept={ALLOWED_FILE_TYPES.join(",")} // Pre-filter files for the user
             />
           </label>
         );
