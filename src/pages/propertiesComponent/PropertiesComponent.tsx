@@ -202,32 +202,6 @@ const PropertiesComponent = () => {
     setComponents((prev) => prev.filter((c) => c.id !== componentToDelete.id));
   };
 
-  // const deleteProperty = (
-  //   componentIndex: number,
-  //   propertyIndexToDelete: number
-  // ) => {
-  //   const updatedComponents = components.map((comp, idx) => {
-  //     if (idx === componentIndex) {
-  //       return {
-  //         ...comp,
-  //         properties: comp.properties.filter(
-  //           (_, propIdx) => propIdx !== propertyIndexToDelete
-  //         ),
-  //       };
-  //     }
-  //     return comp;
-  //   });
-  //   setComponents(updatedComponents);
-  //   // TODO: Send a "delete" WebSocket message to the server here
-  // };
-
-  // const saveProperty = (componentIndex: number, propertyIndex: number) => {
-  //   setEditableState({ componentIndex: null, propertyIndex: null });
-  //   const propertyToSave = components[componentIndex].properties[propertyIndex];
-  //   console.log("Saving property:", propertyToSave);
-  //   // TODO: Send an "update" WebSocket message to the server here
-  // };
-
   if (isCreateMode) {
     return (
       <CreateStaticComponnet
@@ -259,7 +233,7 @@ const PropertiesComponent = () => {
         />
       ) : (
         <Accordion
-          className="component-list-accordion properties-accordion"
+          className="main-content-noFooter component-list-accordion properties-accordion"
           alwaysOpen
         >
           {components.map((component, componentIndex) => {
@@ -591,7 +565,9 @@ const PropertiesComponent = () => {
                       })}
                     </Accordion>
                   ) : (
-                    <p>This component has no properties.</p>
+                    <p style={{ color: "var(--primary-color)" }}>
+                      This component has no properties.
+                    </p>
                   )}
                 </Accordion.Body>
               </Accordion.Item>

@@ -1,0 +1,31 @@
+src/components/layout/MainLayout.css
+
+.main-layout-container {
+  display: flex;
+  /* The container itself doesn't need a height, it will be set by App.css */
+}
+
+/* This is the main scrollable area for your page content */
+.page-content-wrapper {
+  flex-grow: 1; /* Takes up the remaining space */
+  overflow-y: auto; /* Makes the content scroll */
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Hides scrollbar for Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari, and Opera */
+.page-content-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+/* DYNAMIC HEIGHT for pages WITH a footer */
+.page-content-wrapper.with-footer {
+  /* 100vh - Header (79px) - Footer (81px) */
+  height: calc(100vh - 160px);
+}
+
+/* DYNAMIC HEIGHT for pages WITHOUT a footer */
+.page-content-wrapper.no-footer {
+  /* 100vh - Header (79px) */
+  height: calc(100vh - 79px);
+}
