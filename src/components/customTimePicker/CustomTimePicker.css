@@ -1,0 +1,63 @@
+/* Main container for the time picker */
+.custom-timepicker-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 41px;
+  background-color: var(--secondary-background-color);
+  color: var(--primary-color);
+  border-radius: 5px;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+/* Wrapper for each custom dropdown (hour/minute) */
+.custom-select-wrapper {
+  position: relative; /* This is crucial for positioning the options */
+  width: 60px;
+  margin: 0 5px;
+}
+
+/* The box that displays the selected time */
+.custom-select-display {
+  padding: 5px;
+  cursor: pointer;
+  text-align: center;
+  user-select: none; /* Prevents text selection on click */
+}
+
+/* The list of options that appears */
+.custom-select-options {
+  position: absolute;
+  top: 100%; /* Position it directly below the display box */
+  left: 0;
+  width: 100%;
+  background-color: var(--secondary-background-color);
+  border: 1px solid #444; /* Optional border */
+  border-radius: 5px;
+  list-style: none;
+  padding: 0;
+  margin-top: 5px;
+  max-height: 200px; /* Make the list scrollable if it's too long */
+  overflow-y: auto;
+  z-index: 1000; /* Ensure it appears on top of other content */
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+}
+
+/* Individual option item */
+.custom-select-options li {
+  padding: 8px 10px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.custom-select-options li:hover {
+  background-color: #4f4f5a; /* A subtle hover effect */
+}
+
+/* The ':' separator */
+.separator {
+  font-size: 16px;
+  font-weight: bold;
+}

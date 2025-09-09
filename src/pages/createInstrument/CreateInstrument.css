@@ -1,3 +1,8 @@
 .createInstrument-container {
   padding: 10px;
+  padding-bottom: 250px; /* Adjust this value as needed */
+}
+
+.tradingAccountDetail-scroll.overflow-visible {
+  overflow: visible;
 }
