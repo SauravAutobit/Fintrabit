@@ -14,6 +14,6 @@ export const Constant = {
 }
 
 
-export const WEBSOCKET_URL = import.meta.env.VITE_WEBSOCKET_URL
+export const WEBSOCKET_URL ="wss://api.fintrabit.com/api?t=xyz"
 
  
