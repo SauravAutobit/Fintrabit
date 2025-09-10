@@ -1,5 +1,5 @@
 import Button from "../button/Button";
-import "./SubheaderOptions.css";
+import "./SubHeaderOptions.css";
 
 interface SubHeaderOptionsProps {
   options: string[];
