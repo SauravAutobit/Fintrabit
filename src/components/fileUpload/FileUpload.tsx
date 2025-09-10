@@ -13,7 +13,7 @@ interface FileUploadProps {
 }
 
 // --- Configuration for Validation ---
-const MAX_FILE_SIZE_KB = 50; // Max size: 50 Kilobytes
+const MAX_FILE_SIZE_KB = 5; // Max size: 50 Kilobytes
 const ALLOWED_FILE_TYPES = [
   "image/jpeg",
   "image/png",

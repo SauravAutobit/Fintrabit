@@ -9,3 +9,4 @@
     createInstrument: "/create-instrument"
     // createComponent: "/create-component/:type"
   }
+  // as

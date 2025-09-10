@@ -46,6 +46,7 @@
 
 .detailsForm-input {
   transition: all 0.2s ease;
+  height: 41px;
 }
 
 .detailsForm-input-disabled {

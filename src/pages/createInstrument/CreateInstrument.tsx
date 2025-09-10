@@ -100,7 +100,7 @@ const CreateInstrument = () => {
           </Form.Group>
         </Row>
         <Row className="mb-3">
-          <Form.Group as={Col} md="6" controlId="formUserId">
+          {/* <Form.Group as={Col} md="6" controlId="formUserId">
             <Form.Label>Currency</Form.Label>
             <DropdownButton
               id="dropdown-basic-button"
@@ -126,7 +126,7 @@ const CreateInstrument = () => {
                 Group 3
               </Dropdown.Item>
             </DropdownButton>
-          </Form.Group>
+          </Form.Group> */}
 
           <Form.Group as={Col} md="6" controlId="formip">
             <Form.Label>Overnight Margin apply at</Form.Label>
@@ -267,3 +267,4 @@ const CreateInstrument = () => {
 };
 
 export default CreateInstrument;
+// JJ
