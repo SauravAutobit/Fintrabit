@@ -2,7 +2,7 @@ import QueryBar from "../../components/queryBar/QueryBar";
 import { Constant } from "../../utils/constants/app.constants";
 import QueryAdded from "../../components/queryAdded/QueryAdded";
 import { useState } from "react";
-import QueryDetails from "../../components/queryDetails/QueryDetails";
+// import QueryDetails from "../../components/queryDetails/QueryDetails";
 import backArrow from "../../assets/icons/backArrow.svg";
 
 const LeverageTab = () => {
@@ -35,16 +35,17 @@ const LeverageTab = () => {
         </>
       )}
 
-      {view === "details" && (
-        <QueryDetails
-          onBack={() => setView("list")}
-          section={"Query Details"}
-          name={"Query Name :"}
-          nameValue={"Instrument [trading_symbol=’banknifty’]"}
-          total={"Instrument Targeted :"}
-          totalValue={600}
-        />
-      )}
+      {view === "details" &&
+        "dummys"
+        // <QueryDetails
+        //   onBack={() => setView("list")}
+        //   section={"Query Details"}
+        //   name={"Query Name :"}
+        //   nameValue={"Instrument [trading_symbol=’banknifty’]"}
+        //   total={"Instrument Targeted :"}
+        //   totalValue={600}
+        // />
+      }
       {view === "remaining" && (
         <>
           <div className="queryDetails-nav" onClick={() => setView("list")}>
@@ -62,16 +63,17 @@ const LeverageTab = () => {
         </>
       )}
 
-      {view === "remainingDetails" && (
-        <QueryDetails
-          onBack={() => setView("list")}
-          section={"Remaining Instrument"}
-          name={"Instrument Name :"}
-          nameValue={"EUR/USD"}
-          total={"Symbol Code :"}
-          totalValue={600}
-        />
-      )}
+      {view === "remainingDetails" &&
+        "dummys"
+        // <QueryDetails
+        //   onBack={() => setView("list")}
+        //   section={"Remaining Instrument"}
+        //   name={"Instrument Name :"}
+        //   nameValue={"EUR/USD"}
+        //   total={"Symbol Code :"}
+        //   totalValue={600}
+        // />
+      }
     </div>
   );
 };

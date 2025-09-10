@@ -1,11 +1,11 @@
 import "./TradingAccountDetail.css";
 import { useState } from "react";
 import SubHeaderOptions from "../../components/subHeaderOptions/SubHeaderOptions";
-import SubFooter from "../../components/subFooter/SubFooter";
+// import SubFooter from "../../components/subFooter/SubFooter";
 // import SearchBar from "../../components/searchBar/SearchBar";
 // import UserAddedAccounts from "../../components/userAddedAccounts/UserAddedAccounts";
-import { Constant } from "../../utils/constants/app.constants";
-import { Routing } from "../../utils/constants/routes.constants";
+// import { Constant } from "../../utils/constants/app.constants";
+// import { Routing } from "../../utils/constants/routes.constants";
 import AccountsDetailTab from "../accountsDetailTab/AccountsDetailTab";
 import LeverageTab from "../leverageTab/LeverageTab";
 import ChargesTab from "../chargesTab/ChargesTab";
@@ -34,7 +34,7 @@ const TradingAccountDetail = () => {
         {selectedTab === 3 && <InstrumentField />}
         {selectedTab === 4 && <div>Add user (Existing)</div>}
       </div>
-      <SubFooter
+      {/* <SubFooter
         btnText={
           selectedTab === 0 || selectedTab === 1
             ? Constant.Save
@@ -42,7 +42,7 @@ const TradingAccountDetail = () => {
         }
         backBtnText={Constant.Back}
         btnRoute={selectedTab === 0 ? Routing.home : Routing.tradingAccount}
-      />
+      /> */}
     </div>
   );
 };

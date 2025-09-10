@@ -1,7 +1,7 @@
-import NoDataList from "../../components/noDataList/NoDataList";
+// import NoDataList from "../../components/noDataList/NoDataList";
 import SubHeaderOptions from "../../components/subHeaderOptions/SubHeaderOptions";
 import { Routing } from "../../utils/constants/routes.constants";
-import noUserList from "../../assets/icons/noUserList.svg";
+// import noUserList from "../../assets/icons/noUserList.svg";
 import QueryAdded from "../../components/queryAdded/QueryAdded";
 import InstrunmentCount from "../../components/instrunmentCount/InstrunmentCount";
 
