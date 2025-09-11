@@ -105,21 +105,13 @@ const componentsSlice = createSlice({
   reducers: {
     // This reducer will let us add a new component directly to the state
     addComponent: (state, action: PayloadAction<ComponentData>) => {
-    //   if (action.payload.type === 'static') {
-    //     state.static.data.push(action.payload);
-    //   } else {
-    //     state.dinamic.data.push(action.payload);
-    //   }
-
-     const newComponent = action.payload;
-      
-      if (newComponent.type === 'static') {
-        // ✅ FIX: Create a new array by spreading the old one and adding the new item.
-        state.static.data = [...state.static.data, newComponent];
+      if (action.payload.type === 'static') {
+        state.static.data.push(action.payload);
       } else {
-        // ✅ FIX: Do the same for the dynamic components.
-        state.dinamic.data = [...state.dinamic.data, newComponent];
+        state.dinamic.data.push(action.payload);
       }
+
+ 
     },
 
       // ✅ NEW: A reducer to handle local, temporary edits before saving

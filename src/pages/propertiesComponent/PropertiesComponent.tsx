@@ -384,7 +384,10 @@ const PropertiesComponent = () => {
     return (
       <CreateStaticComponnet
         index={selectedTab}
-        onBack={() => setCreateMode(false)}
+        onBack={() => {
+          setCreateMode(false);
+          dispatch(fetchComponentsByType(componentType));
+        }}
       />
     );
   }
