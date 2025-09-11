@@ -2,7 +2,8 @@
   overflow: scroll;
   scroll-behavior: smooth;
   scrollbar-width: none;
-  height: 67vh;
+  /* height: 67vh; */
+  height: calc(100vh - 241px);
 }
 
 .tradingAccountDetail-toggle-container {

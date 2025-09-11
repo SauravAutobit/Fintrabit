@@ -1,5 +1,6 @@
 import edit from "../../assets/icons/edit.svg";
 import deleteIcon from "../../assets/icons/deleteIcon.svg";
+import "../queryDetails/QueryDetails.css";
 
 interface EditDeleteProps {
   onEdit: () => void;
