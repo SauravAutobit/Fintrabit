@@ -14,7 +14,13 @@ export interface Property {
 export interface ComponentData {
   id: string;
   name: string;
-  properties: Property[];
+  properties: Array<{
+    key: string;
+    datatype: string;
+    default: string;
+    length: string;
+    length_type: string;
+  }>;
   type: 'static' | 'dinamic';
 }
 
@@ -69,13 +75,13 @@ export const updateComponent = createAsyncThunk(
     // The payload for the update API might not need the 'type'
     // const { type, ...payload } = component;
 
-     const payload = {
-      id: component.id,
-      name: component.name,
-      properties: component.properties,
-    };
+    //  const payload = {
+    //   id: component.id,
+    //   name: component.name,
+    //   properties: component.properties,
+    // };
     
-    await apiClient.send(targetUrl, payload);
+    await apiClient.send(targetUrl, component);
     
     // Return the updated component so we can update the state
     return component;
@@ -91,7 +97,7 @@ export const deleteComponentById = createAsyncThunk(
       componentType === 'static'
         ? 'instrument/category/delete'
         : 'instrument/category/dinamic/delete';
-    
+    console.log("component", component)
     await apiClient.send(targetUrl, { id: component.id });
 
     // Return the ID of the deleted component so we can remove it from state
@@ -105,9 +111,12 @@ const componentsSlice = createSlice({
   reducers: {
     // This reducer will let us add a new component directly to the state
     addComponent: (state, action: PayloadAction<ComponentData>) => {
-      if (action.payload.type === 'static') {
+      console.log("action", action)
+        if (action.payload.type === 'static') {
+        // console.log("stataic", action)
         state.static.data.push(action.payload);
       } else {
+        // console.log("dinamic", action)
         state.dinamic.data.push(action.payload);
       }
 

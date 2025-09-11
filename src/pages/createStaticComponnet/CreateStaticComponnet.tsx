@@ -184,9 +184,19 @@ const CreateStaticComponnet = ({
       const response = await apiClient.send<ComponentData>(target, payload);
 
       if (response.data) {
-        console.log("✅ Component created successfully:", response.data);
+        console.log(
+          "✅ Component created successfully:",
+          response.data,
+          typeof response.data
+        );
         // ✅ Dispatch the action to add the new component to the Redux store
-        dispatch(addComponent(response.data));
+
+        const obj: ComponentData = {
+          ...payload,
+          id: JSON.stringify(response.data),
+          type: indexNumber === 0 ? "static" : "dinamic", // Ensure correct type
+        };
+        dispatch(addComponent(obj));
         onBack(); // Navigate back
       } else {
         throw new Error("No component data returned from server.");

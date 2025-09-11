@@ -386,7 +386,7 @@ const PropertiesComponent = () => {
         index={selectedTab}
         onBack={() => {
           setCreateMode(false);
-          dispatch(fetchComponentsByType(componentType));
+          // dispatch(fetchComponentsByType(componentType));
         }}
       />
     );
@@ -411,7 +411,7 @@ const PropertiesComponent = () => {
       />
       {isLoading || apiStatus !== "connected" ? (
         <p>Loading...</p>
-      ) : components.length === 0 ? (
+      ) : components?.length === 0 ? (
         <NoDataList
           image={noUserList}
           text={"You don't have any user yet"}
@@ -456,7 +456,7 @@ const PropertiesComponent = () => {
                     </Form.Group>
                   </Row>
 
-                  {component.properties.length > 0 ? (
+                  {component.properties?.length > 0 ? (
                     <Accordion className="properties-accordion">
                       {component.properties.map((property, propertyIndex) => {
                         const isCurrentlyEditing =
@@ -601,7 +601,7 @@ const PropertiesComponent = () => {
                                       <Form.Label>Length</Form.Label>
                                       <Form.Control
                                         type="number"
-                                        defaultValue={property.length}
+                                        defaultValue={property?.length}
                                         disabled={!isCurrentlyEditing}
                                         onChange={(e) =>
                                           handlePropertyUpdate(
@@ -674,7 +674,9 @@ const PropertiesComponent = () => {
                                       <Form.Label>Length Type</Form.Label>
                                       <DropdownButton
                                         id={`dropdown-lengthtype-${propertyIndex}`}
-                                        title={property.length_type || "Select"}
+                                        title={
+                                          property?.length_type || "Select"
+                                        }
                                         className={
                                           isCurrentlyEditing
                                             ? "dropDown-btn"
